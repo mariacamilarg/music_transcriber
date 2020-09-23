@@ -9,7 +9,6 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.3",
-    "react-vexflow": "0.0.4",
     "standalone-vexflow-context": "^0.1.1",
     "vexflow": "^3.0.9"
   },

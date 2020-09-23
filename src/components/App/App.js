@@ -1,5 +1,5 @@
 import React from 'react';
-import Stave from "../Stave/Stave";
+import Staff from "../Staff/Staff";
 import './App.css';
 
 function App() {
@@ -7,8 +7,7 @@ function App() {
     <div className="App">
       <h1>Music transcriber</h1>
       <div className="Stave">
-        <canvas id="canvas"></canvas>
-        <Stave/>
+        <Staff />
       </div>
 
     </div>
