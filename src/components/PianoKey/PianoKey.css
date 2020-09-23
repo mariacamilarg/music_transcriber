@@ -3,40 +3,29 @@
   width: 13%;
   height: 100%;
   border: 2px solid #000000; 
+  flex: 1 1 auto;
+  position: relative;
 }
 
 .component-key button {
-  background-color: #ffffff;
-  color: black;
+  display: flex;
   border: 0;
   font-size: 1.5rem;
-  flex: 1 0 auto;
+  flex: 1 1 auto;
 }
 
-.component-key.black button {
+.component-key button.white {
+  background-color: #ffffff;
+  color: black;
+  line-height: 10;
+}
+
+.component-key button.black {
   background-color: #000000;
   color: white;
   height: 80%;
-  width: 10%;
-}
-
-/* Style the button and place it in the middle of the container/image */
-.containerrrr .btnnnn {
+  width: 100%;
   position: absolute;
-  top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  background-color: #555;
-  color: white;
-  font-size: 16px;
-  padding: 12px 24px;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-
-.component-key:last-child button {
-  margin-right: 0;
+  line-height: 10;
 }

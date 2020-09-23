@@ -27,19 +27,12 @@ class Piano extends React.Component {
   render() {
     return (
       <div className="component-piano">
-        <PianoKey note="Do" keyboardLetter="A" clickHandler={this.handleClick}>
-          
-        </PianoKey>  
-        <PianoKey note="Do#" keyboardLetter="W" clickHandler={this.handleClick} blackKey />
-        <PianoKey note="Re" keyboardLetter="S" clickHandler={this.handleClick} />
-        <PianoKey note="Re#" keyboardLetter="E" clickHandler={this.handleClick} blackKey />
+        <PianoKey note="Do" keyboardLetter="A" clickHandler={this.handleClick} hasSharpKey />
+        <PianoKey note="Re" keyboardLetter="S" clickHandler={this.handleClick} hasSharpKey/>
         <PianoKey note="Mi" keyboardLetter="D" clickHandler={this.handleClick} />
-        <PianoKey note="Fa" keyboardLetter="F" clickHandler={this.handleClick} />
-        <PianoKey note="Fa#" keyboardLetter="T" clickHandler={this.handleClick} blackKey />
-        <PianoKey note="Sol" keyboardLetter="G" clickHandler={this.handleClick} />
-        <PianoKey note="Sol#" keyboardLetter="Y" clickHandler={this.handleClick} blackKey />
-        <PianoKey note="La" keyboardLetter="H" clickHandler={this.handleClick} />
-        <PianoKey note="La#" keyboardLetter="U" clickHandler={this.handleClick} blackKey />
+        <PianoKey note="Fa" keyboardLetter="F" clickHandler={this.handleClick} hasSharpKey/>
+        <PianoKey note="Sol" keyboardLetter="G" clickHandler={this.handleClick} hasSharpKey/>
+        <PianoKey note="La" keyboardLetter="H" clickHandler={this.handleClick} hasSharpKey/>
         <PianoKey note="Si" keyboardLetter="J" clickHandler={this.handleClick} />
       </div>
     );

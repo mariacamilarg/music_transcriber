@@ -21,8 +21,7 @@ class PianoKey extends React.Component {
   static propTypes = {
     note: PropTypes.string,
     keyboardLetter: PropTypes.string,
-    blackKey: PropTypes.bool,
-    //wide: PropTypes.bool,
+    hasSharpKey: PropTypes.bool,
     clickHandler: PropTypes.func,
   };
 
@@ -30,12 +29,23 @@ class PianoKey extends React.Component {
     this.props.clickHandler(this.props.note);
   };
 
-  render() {
-    const className = this.props.blackKey ? "component-key" : "component-key black";
+  handleClickSharp = () => {
+    this.props.clickHandler(this.props.note + "#");
+  };
 
+  render() {
+    //const className = this.props.blackKey ? "component-key black" : "component-key";
     return (
-      <div className={className}>
-        <button onClick={this.handleClick}>{this.props.note}</button>
+      <div className="component-key">
+        <button className="white" onClick={this.handleClick}>
+          {this.props.note}
+        </button>
+        { 
+          this.props.hasSharpKey && 
+          <button className="black" onClick={this.handleClickSharp}>
+            {this.props.note + "#"}
+          </button> 
+        }
       </div>
     );
   }
