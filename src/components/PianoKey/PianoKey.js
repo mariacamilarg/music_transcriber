@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from "prop-types";
 import "./PianoKey.css";
+import playTone from "../../libs/simpleTones"
 
 /* 
 * https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API
@@ -12,25 +13,43 @@ import "./PianoKey.css";
 * https://medium.com/@Charles_Stover/optimal-file-structure-for-react-applications-f3e35ad0a145
 * https://github.com/GermaVinsmoke/bmi-calculator/tree/master/src
 * https://github.com/ahfarmer/calculator/tree/master/src/component
+* https://codepen.io/gabrielcarol/pen/rGeEbY
 --
 * Vex flow https://github.com/markacola/react-vexflow/blob/master/src/index.js
 */
 
 class PianoKey extends React.Component {
-  
+
   static propTypes = {
     note: PropTypes.string,
+    octave: PropTypes.string,
     keyboardLetter: PropTypes.string,
     hasSharpKey: PropTypes.bool,
     clickHandler: PropTypes.func,
   };
 
+  abcNotes = {
+    "Do": 'C',
+    "Re": 'D',
+    "Mi": 'E',
+    "Fa": 'F',
+    "Sol": 'G',
+    "La": 'A',
+    "Si": 'B'
+  };
+
   handleClick = () => {
-    this.props.clickHandler(this.props.note);
+    var abcNoteWithOctave = this.abcNotes[this.props.note] + this.props.octave;
+    playTone(abcNoteWithOctave);
+
+    this.props.clickHandler(abcNoteWithOctave);
   };
 
   handleClickSharp = () => {
-    this.props.clickHandler(this.props.note + "#");
+    var abcNoteWithOctave = this.abcNotes[this.props.note] + "#" + this.props.octave;
+    playTone(abcNoteWithOctave);
+
+    this.props.clickHandler(abcNoteWithOctave);
   };
 
   render() {

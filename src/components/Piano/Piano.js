@@ -6,16 +6,6 @@ import PianoKey from '../PianoKey/PianoKey';
 
 class Piano extends React.Component {
 
-  static notes = {
-    DO: 'C',
-    RE: 'D',
-    MI: 'E',
-    FA: 'F',
-    SOL: 'G',
-    LA: 'A',
-    SI: 'B'
-  };
-
   static propTypes = {
     clickHandler: PropTypes.func,
   };
@@ -27,13 +17,13 @@ class Piano extends React.Component {
   render() {
     return (
       <div className="component-piano">
-        <PianoKey note="Do" keyboardLetter="A" clickHandler={this.handleClick} hasSharpKey />
-        <PianoKey note="Re" keyboardLetter="S" clickHandler={this.handleClick} hasSharpKey/>
-        <PianoKey note="Mi" keyboardLetter="D" clickHandler={this.handleClick} />
-        <PianoKey note="Fa" keyboardLetter="F" clickHandler={this.handleClick} hasSharpKey/>
-        <PianoKey note="Sol" keyboardLetter="G" clickHandler={this.handleClick} hasSharpKey/>
-        <PianoKey note="La" keyboardLetter="H" clickHandler={this.handleClick} hasSharpKey/>
-        <PianoKey note="Si" keyboardLetter="J" clickHandler={this.handleClick} />
+        <PianoKey note="Do" octave="5" keyboardLetter="A" clickHandler={this.handleClick} hasSharpKey />
+        <PianoKey note="Re" octave="5" keyboardLetter="S" clickHandler={this.handleClick} hasSharpKey/>
+        <PianoKey note="Mi" octave="5" keyboardLetter="D" clickHandler={this.handleClick} />
+        <PianoKey note="Fa" octave="5" keyboardLetter="F" clickHandler={this.handleClick} hasSharpKey/>
+        <PianoKey note="Sol" octave="5" keyboardLetter="G" clickHandler={this.handleClick} hasSharpKey/>
+        <PianoKey note="La" octave="5" keyboardLetter="H" clickHandler={this.handleClick} hasSharpKey/>
+        <PianoKey note="Si" octave="5" keyboardLetter="J" clickHandler={this.handleClick} />
       </div>
     );
   }
