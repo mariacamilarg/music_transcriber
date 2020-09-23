@@ -7,22 +7,21 @@ import Piano from '../Piano/Piano';
 function App() {
 
   var state = {
-    total: "totalll",
-    next: null,
+    msg: "this should update the stave",
     operation: null,
   };
 
   function handleClick(note) {
     //this.setState(calculate(this.state, buttonName));
     console.log(note);
-    console.log(state.total);
+    console.log(state.msg);
   };
 
   return (
     <div className="App">
-      <div className="component-piano">
-        <Piano clickHandler={handleClick} />
-      </div>
+      <h1>Music transcriber</h1>
+      <br />
+      <Piano clickHandler={handleClick} />
     </div>
   );
 }

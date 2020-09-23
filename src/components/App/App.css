@@ -36,11 +36,3 @@
     transform: rotate(360deg);
   }
 }
-
-
-.component-piano {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  height: 100%;
-}

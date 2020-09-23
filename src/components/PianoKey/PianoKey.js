@@ -12,6 +12,8 @@ import "./PianoKey.css";
 * https://medium.com/@Charles_Stover/optimal-file-structure-for-react-applications-f3e35ad0a145
 * https://github.com/GermaVinsmoke/bmi-calculator/tree/master/src
 * https://github.com/ahfarmer/calculator/tree/master/src/component
+--
+* Vex flow https://github.com/markacola/react-vexflow/blob/master/src/index.js
 */
 
 class PianoKey extends React.Component {
@@ -29,13 +31,10 @@ class PianoKey extends React.Component {
   };
 
   render() {
-    const className = [
-      "component-button",
-      this.props.blackKey ? "black" : "",
-    ];
+    const className = this.props.blackKey ? "component-key" : "component-key black";
 
     return (
-      <div className={className.join(" ")}>
+      <div className={className}>
         <button onClick={this.handleClick}>{this.props.note}</button>
       </div>
     );

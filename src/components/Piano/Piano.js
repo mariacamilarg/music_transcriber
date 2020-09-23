@@ -5,6 +5,17 @@ import './Piano.css';
 import PianoKey from '../PianoKey/PianoKey';
 
 class Piano extends React.Component {
+
+  static notes = {
+    DO: 'C',
+    RE: 'D',
+    MI: 'E',
+    FA: 'F',
+    SOL: 'G',
+    LA: 'A',
+    SI: 'B'
+  };
+
   static propTypes = {
     clickHandler: PropTypes.func,
   };
@@ -15,21 +26,21 @@ class Piano extends React.Component {
 
   render() {
     return (
-      <div className="component-button-panel">
-        <div>
-          <PianoKey note="C" keyboardLetter="A" clickHandler={this.handleClick} />
-          <PianoKey note="C# Db" keyboardLetter="W" clickHandler={this.handleClick} blackKey />
-          <PianoKey note="D" keyboardLetter="S" clickHandler={this.handleClick} />
-          <PianoKey note="D# Eb" keyboardLetter="E" clickHandler={this.handleClick} blackKey />
-          <PianoKey note="E" keyboardLetter="D" clickHandler={this.handleClick} />
-          <PianoKey note="E# Fb" keyboardLetter="R" clickHandler={this.handleClick} blackKey />
-          <PianoKey note="F" keyboardLetter="F" clickHandler={this.handleClick} />
-          <PianoKey note="F# Gb" keyboardLetter="T" clickHandler={this.handleClick} blackKey />
-          <PianoKey note="G" keyboardLetter="G" clickHandler={this.handleClick} />
-          <PianoKey note="G# Ab" keyboardLetter="Y" clickHandler={this.handleClick} blackKey />
-          <PianoKey note="A" keyboardLetter="H" clickHandler={this.handleClick} />
-          <PianoKey note="B" keyboardLetter="J" clickHandler={this.handleClick} />
-        </div>
+      <div className="component-piano">
+        <PianoKey note="Do" keyboardLetter="A" clickHandler={this.handleClick}>
+          
+        </PianoKey>  
+        <PianoKey note="Do#" keyboardLetter="W" clickHandler={this.handleClick} blackKey />
+        <PianoKey note="Re" keyboardLetter="S" clickHandler={this.handleClick} />
+        <PianoKey note="Re#" keyboardLetter="E" clickHandler={this.handleClick} blackKey />
+        <PianoKey note="Mi" keyboardLetter="D" clickHandler={this.handleClick} />
+        <PianoKey note="Fa" keyboardLetter="F" clickHandler={this.handleClick} />
+        <PianoKey note="Fa#" keyboardLetter="T" clickHandler={this.handleClick} blackKey />
+        <PianoKey note="Sol" keyboardLetter="G" clickHandler={this.handleClick} />
+        <PianoKey note="Sol#" keyboardLetter="Y" clickHandler={this.handleClick} blackKey />
+        <PianoKey note="La" keyboardLetter="H" clickHandler={this.handleClick} />
+        <PianoKey note="La#" keyboardLetter="U" clickHandler={this.handleClick} blackKey />
+        <PianoKey note="Si" keyboardLetter="J" clickHandler={this.handleClick} />
       </div>
     );
   }
