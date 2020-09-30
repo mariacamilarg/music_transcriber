@@ -23,9 +23,7 @@ class MyStaff extends React.Component {
         this.rendererRef = React.createRef();
     }
 
-    componentDidMount() {
-        console.log("component mounted " + this.props.notes);
-
+    paintStaff () {
         // VF
         const { Formatter, Renderer, Stave, StaveNote } = this.VF;
 
@@ -81,13 +79,22 @@ class MyStaff extends React.Component {
         });
     }
 
+    componentDidMount() {
+        console.log("component mounted " + this.props.notes);
+        this.paintStaff();
+    }
+
     componentDidUpdate () {
         console.log("component updated " + this.props.notes);
+        this.paintStaff();
     }
 
     render(){
         return (
-            <div id='Stave' ref={this.container} />
+            <div>
+                <p key={this.props.notes}>{this.props.notes}</p>
+                <div id='Stave' ref={this.container} />
+            </div>
         );
     }
 }

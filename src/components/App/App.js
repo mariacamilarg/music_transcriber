@@ -25,9 +25,9 @@ class App extends React.Component {
 
   addNote(note) {
     console.log("New note : " + note);
-    console.log(this.state.notes);
-    this.state.notes.push("b/4");
-    console.log(this.state.notes);
+    this.setState({
+      notes: this.state.notes.concat(["b/4"])
+    });
     //this.forceUpdate();
   }
 
