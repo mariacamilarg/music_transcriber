@@ -18,7 +18,7 @@ class Staff extends React.Component {
         this.width = 600;
         this.height = 150;
 
-        // Ref to cointainer div
+        // Refs for the div container and the renderer
         this.container = React.createRef();
         this.rendererRef = React.createRef();
     }
@@ -60,10 +60,9 @@ class Staff extends React.Component {
         //     );
     }
 
-    paintStaff () {
-        
+    initializeRenderer() {
         // VF
-        const { Renderer, Stave } = this.VF;
+        const { Renderer } = this.VF;
 
         // Renderer
         if (this.rendererRef.current == null) {
@@ -72,10 +71,18 @@ class Staff extends React.Component {
 
         this.renderer = this.rendererRef.current;
         this.renderer.resize(this.width, this.height);
+    }
 
+    initializeContext() {
         // Context
         this.context = this.renderer.getContext()
         this.context.setFont('Arial', 10, '').setBackgroundFillStyle('#eed')
+    }
+
+    paintStaff () {
+        
+        // VF
+        const { Stave } = this.VF;
 
         // Stave
         this.stave = new Stave(0, 0, this.width);
@@ -100,30 +107,42 @@ class Staff extends React.Component {
         });
     }
 
-    componentDidMount () {
-        console.log("component mounted " + this.props.notes.map(note => note.keys));
+    paint () {
+        this.initializeRenderer();
+        this.initializeContext();
+
+        // Open Group
+        this.group = this.context.openGroup();
+
         this.paintStaff();
         this.paintNotes();
+
+        // Close group:
+        this.context.closeGroup();
+    }
+
+    clear () {
+        // Delete the existing group to paint again
+        this.context = this.renderer.getContext();
+        this.context.svg.removeChild(this.group);
+    }
+
+    componentDidMount () {
+        console.log("component mounted " + this.props.notes.map(note => note.keys));
+        
+        this.paint();
     }
 
     componentDidUpdate () {
         console.log("component updated " + this.props.notes.map(note => note.keys));
 
-        // const { StaveNote } = this.VF;
-        // var mi = new StaveNote({
-        //     keys: [String("e/4")],
-        //     duration: String("1"),
-        // })
-        // this.parsedNotes.push(mi);
-
-        this.paintNotes();
+        this.clear();
+        this.paint();
     }
 
     render(){
         return (
-            <div>
-                <div id='Stave' ref={this.container} />
-            </div>
+            <div id='Stave' ref={this.container} />
         );
     }
 }
