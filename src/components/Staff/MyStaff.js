@@ -78,10 +78,9 @@ class MyStaff extends React.Component {
         this.width = 600;
         this.height = 150;
 
-        console.log("constructor props " + this.props);
-
         // Ref to cointainer div
         this.container = React.createRef();
+        this.rendererRef = React.createRef();
     }
 
     componentDidMount() {
@@ -91,7 +90,10 @@ class MyStaff extends React.Component {
         const { Formatter, Renderer, Stave, StaveNote } = this.VF;
 
         // Renderer
-        this.rendererRef = new Renderer(this.container.current, Renderer.Backends.SVG);
+        if (this.rendererRef.current == null) {
+            this.rendererRef.current = new Renderer(this.container.current, Renderer.Backends.SVG);
+        }
+
         this.renderer = this.rendererRef.current;
         this.renderer.resize(this.width, this.height);
 

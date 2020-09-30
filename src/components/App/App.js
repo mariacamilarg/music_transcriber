@@ -39,7 +39,7 @@ class App extends React.Component {
         <Piano clickHandler={this.handleClick} />
         <br />
         <button onClick={() => this.addNote("b/4")}> Add B/4 </button>
-        <MyStaff clef='treble' timeSignature='4/4' mynotes={this.state.notes}/>
+        <MyStaff clef='treble' timeSignature='4/4' notes={this.state.notes}/>
       </div>
     );
   }
