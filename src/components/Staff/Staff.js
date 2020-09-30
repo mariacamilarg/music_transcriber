@@ -2,19 +2,21 @@ import React, { useRef, useEffect } from 'react'
 import VexFlow from 'vexflow'
 import './Staff.css';
 
+// ECRIRE SOURCE DU CODE
+/*
 const VF = VexFlow.Flow
 const { Formatter, Renderer, Stave, StaveNote } = VF
+const clef='treble';
+const timeSignature='4/4';
+const width=600;
+const height=150;
 
-function Staff() {
 
-    const clef='treble';
-    const timeSignature='4/4';
-    const width=450;
-    const height=150;
 
-    const container = useRef()
-    const rendererRef = useRef()
-    const notes=["c/4","d/4", "e/4", "f/4", "g/4", "a/4", "b/4"]
+function Staff(props) { 
+    const container = useRef() //const
+    const rendererRef = useRef()   //const
+    const notes= props.mynotes
     
     useEffect(() => {
         
@@ -22,19 +24,19 @@ function Staff() {
         rendererRef.current = new Renderer(container.current, Renderer.Backends.SVG);
       }
 
-      const renderer = rendererRef.current
+      const renderer = rendererRef.current //const
       renderer.resize(width, height)
 
-      const context = renderer.getContext()
+      const context = renderer.getContext()//const
       context.setFont('Arial', 10, '').setBackgroundFillStyle('#eed')
 
-      const stave = new Stave(0, 0, width)
+      const stave = new Stave(0, 0, width) //const
       stave.setWidth(width)
       stave.addClef(clef).addTimeSignature(timeSignature)
       stave.setContext(context).draw()
 
       //draw notes
-      const processedNotes = notes
+      const processedNotes = notes //const
       .map(note => (typeof note === 'string' ? { key: note } : note))
       .map(note =>
            Array.isArray(note) ? { key: note[0], duration: note[1] } : note
@@ -60,8 +62,44 @@ function Staff() {
        })
     })
 
-    return (<div ref={container} />);
+    return (<div ref={container}/>);
 
 }
+*/
+
+function Staff(props) { 
+    const VF = VexFlow.Flow
+    const { Formatter, Renderer} = VF//, Stave, StaveNote } = VF
+    const container = useRef() //const
+    const rendererRef = useRef()   //const
+    const notes= props.mynotes
+    const stave= props.stave
+    const width=props.width
+    const height=props.height
+    
+    useEffect(() => {
+        
+      if (rendererRef.current == null) {
+        rendererRef.current = new Renderer(container.current, Renderer.Backends.SVG);
+      }
+
+      const renderer = rendererRef.current //const
+      renderer.resize(width, height)
+
+      const context = renderer.getContext()//const
+      context.setFont('Arial', 10, '').setBackgroundFillStyle('#eed')
+
+      stave.setContext(context).draw()
+
+       Formatter.FormatAndDraw(context, stave, notes, {
+           auto_beam: true,
+       })
+    })
+
+    return (<div ref={container}/>);
+
+}
+
+
 
 export default Staff;

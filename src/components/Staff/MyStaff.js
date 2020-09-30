@@ -48,11 +48,11 @@ function Staff(props) {
                duration: String(duration),
            })
        )
-       //var mi =new StaveNote({
-       // keys: String("c/4"),
-       // duration: String("1"),
-       // })
-       //processedNotes.push(mi);
+       var mi =new StaveNote({
+        keys: [String("e/4")],
+        duration: String("1"),
+        })
+       processedNotes.push(mi);
        Formatter.FormatAndDraw(context, stave, processedNotes, {
            auto_beam: true,
        })
