@@ -73,18 +73,58 @@ class MyStaff extends React.Component {
 
     constructor(props){
         super(props);
-        this.VF = VexFlow.Flow
-        const { Stave } = this.VF
-        this.width=600;
-        this.height=150;
 
-        //this.container = useRef() //const
-        //this.rendererRef = useRef()   //const
-        this.notes= props.mynotes
-        console.log(this.notes)
-        this.stave = new Stave(0, 0, this.width) //const
-        //this.stave.setWidth(this.width)
-        this.stave.addClef(this.props.clef).addTimeSignature(this.props.timeSignature)
+        this.VF = VexFlow.Flow;
+        this.width = 600;
+        this.height = 150;
+
+        const { Formatter, Renderer, Stave, StaveNote } = this.VF;
+        const container = React.createRef();
+        const rendererRef = new Renderer(container.current, Renderer.Backends.SVG);
+        
+        // Renderer
+        const renderer = rendererRef.current;
+        renderer.resize(this.width, this.height);
+
+        // Context
+        const context = renderer.getContext()//const
+        context.setFont('Arial', 10, '').setBackgroundFillStyle('#eed')
+
+        // Stave
+        this.stave = new Stave(0, 0, this.width);
+        this.stave.addClef(this.props.clef).addTimeSignature(this.props.timeSignature);
+        this.stave.setContext(context).draw()
+
+        // Notes
+        const processedNotes = this.props.notes
+            .map(
+                note => (typeof note === 'string' ? { key: note } : note)
+            )
+            .map(
+                note => Array.isArray(note) ? { key: note[0], duration: note[1] } : note
+            )
+            .map(
+                ({ key, ...rest }) =>
+                    typeof key === 'string'
+                    ? { key: key.includes('/') ? key : `${key[0]}/${key.slice(1)}`, ...rest, }
+                    : rest
+            )
+            .map(
+                ({ key, keys, duration = '1' }) =>
+                    new StaveNote({
+                        keys: key ? [key] : keys,
+                        duration: String(duration),
+                    })
+            );
+
+        // Formatter
+        Formatter.FormatAndDraw(context, this.stave, processedNotes, {
+           auto_beam: true,
+        });
+    }
+
+    componentDidMount() {
+        console.log("component mounted " + this.props.notes);
     }
 
     componentDidUpdate () {
@@ -93,12 +133,7 @@ class MyStaff extends React.Component {
 
     render(){
         return (
-            <div id='Stave'>
-                <p>{this.notes}</p>
-                <div id="staffPic">
-                    <Staff mynotes={this.notes} stave={this.stave} width={this.width} height={this.height}/>
-                </div>
-            </div>
+            <div id='Stave' ref={this.container} />
         );
     }
 }
