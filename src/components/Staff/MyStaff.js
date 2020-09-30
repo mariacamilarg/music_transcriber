@@ -78,16 +78,25 @@ class MyStaff extends React.Component {
         this.width = 600;
         this.height = 150;
 
+        console.log("constructor props " + this.props);
+
+        // Ref to cointainer div
+        this.container = React.createRef();
+    }
+
+    componentDidMount() {
+        console.log("component mounted " + this.props.notes);
+
+        // VF
         const { Formatter, Renderer, Stave, StaveNote } = this.VF;
-        const container = React.createRef();
-        const rendererRef = new Renderer(container.current, Renderer.Backends.SVG);
-        
+
         // Renderer
-        const renderer = rendererRef.current;
-        renderer.resize(this.width, this.height);
+        this.rendererRef = new Renderer(this.container.current, Renderer.Backends.SVG);
+        this.renderer = this.rendererRef.current;
+        this.renderer.resize(this.width, this.height);
 
         // Context
-        const context = renderer.getContext()//const
+        const context = this.renderer.getContext()//const
         context.setFont('Arial', 10, '').setBackgroundFillStyle('#eed')
 
         // Stave
@@ -123,17 +132,14 @@ class MyStaff extends React.Component {
         });
     }
 
-    componentDidMount() {
-        console.log("component mounted " + this.props.notes);
-    }
-
     componentDidUpdate () {
         console.log("component updated " + this.props.notes);
     }
 
     render(){
         return (
-            <div id='Stave' ref={this.container} />
+            <div id='Stave' ref={this.container}>
+            </div>
         );
     }
 }
