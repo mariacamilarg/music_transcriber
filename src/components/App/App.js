@@ -12,7 +12,6 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      msg: "this should update the stave",
       operation: null,
       notes: ["c/4","d/4", "e/4", "f/4", "g/4", "a/4"]
     };
@@ -21,7 +20,7 @@ class App extends React.Component {
   handleClick(note) {
     //this.setState(calculate(this.state, buttonName));
     console.log(note);
-    console.log(this.state.msg);
+    console.log("this should update the stave");
   };
 
   addNote(note) {

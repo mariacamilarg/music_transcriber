@@ -1,9 +1,7 @@
-//import React from 'react';
 import React from 'react'
 import PropTypes from "prop-types";
 import VexFlow from 'vexflow'
 import './MyStaff.css';
-//import Staff from './Staff';
 
 class MyStaff extends React.Component {
 
@@ -89,8 +87,7 @@ class MyStaff extends React.Component {
 
     render(){
         return (
-            <div id='Stave' ref={this.container}>
-            </div>
+            <div id='Stave' ref={this.container} />
         );
     }
 }
