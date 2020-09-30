@@ -1,24 +1,27 @@
 import React from 'react';
-import logo from '../../images/logo.svg';
+//import logo from '../../images/logo.svg';
 import './App.css';
 
+import Piano from '../Piano/Piano';
+
 function App() {
+
+  var state = {
+    msg: "this should update the stave",
+    operation: null,
+  };
+
+  function handleClick(note) {
+    //this.setState(calculate(this.state, buttonName));
+    console.log(note);
+    console.log(state.msg);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Music transcriber</h1>
+      <br />
+      <Piano clickHandler={handleClick} />
     </div>
   );
 }
