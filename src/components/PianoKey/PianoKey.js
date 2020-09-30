@@ -14,6 +14,7 @@ import playTone from "../../libs/simpleTones"
 * https://github.com/GermaVinsmoke/bmi-calculator/tree/master/src
 * https://github.com/ahfarmer/calculator/tree/master/src/component
 * https://codepen.io/gabrielcarol/pen/rGeEbY
+* https://carolinegabriel.com/javascript-piano/
 --
 * Vex flow https://github.com/markacola/react-vexflow/blob/master/src/index.js
 */

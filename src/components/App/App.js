@@ -24,15 +24,8 @@ function App() {
     <div className="App">
       <h1>Music transcriber</h1>
       <Piano clickHandler={handleClick} />
-      <div id="Stave">
-        <MyStaff mynotes={["c/4","d/4", "e/4", "f/4", "g/4", "a/4"]}/>
-      </div>
-
-
-      <br />
-      
+      <MyStaff mynotes={["c/4","d/4", "e/4", "f/4", "g/4", "a/4"]}/>
     </div>
-    
   );
 }
 

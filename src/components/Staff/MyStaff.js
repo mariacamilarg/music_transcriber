@@ -103,13 +103,13 @@ class MyStaff extends React.Component {
     render(){
         return (
             <div id='Stave'>
-            <p>{this.notes}</p>
-            <div id="staffPic">
-                <Staff mynotes={this.notes} stave={this.stave} width={this.width} height={this.height}/>
+                <p>{this.notes}</p>
+                <div id="staffPic">
+                    <Staff mynotes={this.notes} stave={this.stave} width={this.width} height={this.height}/>
+                </div>
+                <button onClick={() =>this.addNote("b/4")}>Add B/4</button>
             </div>
-            <button onClick={() =>this.addNote("b/4")}>Add B/4</button>
-        </div>
-            );
+        );
     }
 
 }
