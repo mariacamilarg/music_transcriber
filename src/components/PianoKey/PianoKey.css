@@ -1,0 +1,32 @@
+.component-key {
+  display: inline-flex;
+  width: 13%;
+  height: 100%;
+  border: 0; 
+  flex: 1 1 auto;
+  position: relative;
+}
+
+.component-key button {
+  display: flex;
+  border: 2px solid #000000; 
+  flex: 1 1 auto;
+  border-bottom-left-radius: .5rem;
+  border-bottom-right-radius: .5rem;
+}
+
+.component-key button.white {
+  background-color: #ffffff;
+  color: black;
+  z-index: 2;
+}
+
+.component-key button.black {
+  background-color: #000000;
+  color: white;
+  height: 80%;
+  width: 70%;
+  position: absolute;
+  left: 65%;
+  z-index: 3;
+}
