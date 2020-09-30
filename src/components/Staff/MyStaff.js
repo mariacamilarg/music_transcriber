@@ -1,5 +1,6 @@
 //import React from 'react';
 import React, { useRef, useEffect } from 'react'
+import PropTypes from "prop-types";
 import VexFlow from 'vexflow'
 import './MyStaff.css';
 //import Staff from './Staff';
@@ -9,10 +10,10 @@ function Staff(props) {
     const { Formatter, Renderer, StaveNote } = VF
     const container = useRef() //const
     const rendererRef = useRef()   //const
-    const notes= props.mynotes
-    const stave= props.stave
-    const width=props.width
-    const height=props.height
+    const notes = props.mynotes
+    const stave = props.stave
+    const width = props.width
+    const height = props.height
     
     useEffect(() => {
         
@@ -59,18 +60,21 @@ function Staff(props) {
     })
 
     return (<div ref={container}/>);
-
 }
 
 
-
 class MyStaff extends React.Component {
+
+    static propTypes = {
+        clef: PropTypes.string,
+        timeSignature: PropTypes.string,
+        notes: PropTypes.array,
+    };
+
     constructor(props){
         super(props);
         this.VF = VexFlow.Flow
         const { Stave } = this.VF
-        this.clef='treble';
-        this.timeSignature='4/4';
         this.width=600;
         this.height=150;
 
@@ -79,26 +83,13 @@ class MyStaff extends React.Component {
         this.notes= props.mynotes
         console.log(this.notes)
         this.stave = new Stave(0, 0, this.width) //const
-        this.stave.setWidth(this.width)
-        this.stave.addClef(this.clef).addTimeSignature(this.timeSignature)
+        //this.stave.setWidth(this.width)
+        this.stave.addClef(this.props.clef).addTimeSignature(this.props.timeSignature)
     }
 
-    componentDidMount () {
-        if (this.props.onMounted) {
-            this.props.onMounted({
-                addNote: note => this.addNote(note)
-            });
-        }
+    componentDidUpdate () {
+        console.log("component updated " + this.props.notes);
     }
-
-    addNote(note){
-        console.log("I am in MyStaff Method :"+note);
-        this.notes.push(note);
-        console.log(this.notes);
-        this.forceUpdate();
-
-    }
-
 
     render(){
         return (
@@ -107,11 +98,9 @@ class MyStaff extends React.Component {
                 <div id="staffPic">
                     <Staff mynotes={this.notes} stave={this.stave} width={this.width} height={this.height}/>
                 </div>
-                <button onClick={() =>this.addNote("b/4")}>Add B/4</button>
             </div>
         );
     }
-
 }
 
 export default MyStaff;
