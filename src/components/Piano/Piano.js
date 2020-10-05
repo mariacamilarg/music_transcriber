@@ -8,7 +8,12 @@ class Piano extends React.Component {
 
   static propTypes = {
     clickHandler: PropTypes.func,
+    mouseUpHandler: PropTypes.func,
   };
+
+  handlemouseUp = t =>{
+    this.props.mouseUpHandler(t);
+  }
 
   handleClick = keyNote => {
     this.props.clickHandler(keyNote);
@@ -17,13 +22,13 @@ class Piano extends React.Component {
   render() {
     return (
       <div className="component-piano">
-        <PianoKey note="Do" octave="4" keyboardLetter="A" clickHandler={this.handleClick} hasSharpKey />
-        <PianoKey note="Re" octave="4" keyboardLetter="S" clickHandler={this.handleClick} hasSharpKey/>
-        <PianoKey note="Mi" octave="4" keyboardLetter="D" clickHandler={this.handleClick} />
-        <PianoKey note="Fa" octave="4" keyboardLetter="F" clickHandler={this.handleClick} hasSharpKey/>
-        <PianoKey note="Sol" octave="4" keyboardLetter="G" clickHandler={this.handleClick} hasSharpKey/>
-        <PianoKey note="La" octave="4" keyboardLetter="H" clickHandler={this.handleClick} hasSharpKey/>
-        <PianoKey note="Si" octave="4" keyboardLetter="J" clickHandler={this.handleClick} />
+        <PianoKey note="C" octave="4" keyboardLetter="A" mouseUpHandler={this.handlemouseUp} clickHandler={this.handleClick} hasSharpKey />
+        <PianoKey note="D" octave="4" keyboardLetter="S" mouseUpHandler={this.handlemouseUp} clickHandler={this.handleClick} hasSharpKey/>
+        <PianoKey note="E" octave="4" keyboardLetter="D" mouseUpHandler={this.handlemouseUp} clickHandler={this.handleClick} />
+        <PianoKey note="F" octave="4" keyboardLetter="F" mouseUpHandler={this.handlemouseUp} clickHandler={this.handleClick} hasSharpKey/>
+        <PianoKey note="G" octave="4" keyboardLetter="G" mouseUpHandler={this.handlemouseUp} clickHandler={this.handleClick} hasSharpKey/>
+        <PianoKey note="A" octave="4" keyboardLetter="H" mouseUpHandler={this.handlemouseUp} clickHandler={this.handleClick} hasSharpKey/>
+        <PianoKey note="B" octave="4" keyboardLetter="J" mouseUpHandler={this.handlemouseUp} clickHandler={this.handleClick} />
       </div>
     );
   }

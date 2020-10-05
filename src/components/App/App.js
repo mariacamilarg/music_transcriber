@@ -9,33 +9,55 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      notes: [
-        {
-          keys: ["Bb/4"],
-          duration: "2",
-        },
-        {
-          keys: ["D/4"],
-          duration: "2"
-        },
-        {
-          keys: ["E/4"],
-          duration: "1",
-        }        
-        // new StaffNote(["c/4"], "1"),
-        // new StaffNote(["d/4"], "1"),
-        // new StaffNote(["e/4"], "1"),
-      ],  
+      notes: [],  
     };
+    this.tempo=120;
+    this.handleClick = this.handleClick.bind(this);
+    this.handlemouseUp = this.handlemouseUp.bind(this);
   };
 
+  handlemouseUp(data){
+    console.log("Mouse is Down for :"+data.time);
+    var long= data.time;
+    var mt = ((60*1000)/this.tempo)/4;
+    console.log("MinTime = "+mt);
+    var d="0";
+    var dot=[false];
+    if(long<mt*3){
+      //8th
+      d="8";
+    }
+    else if(long>=mt*3 && long<mt*5){
+      //quater/black
+      d="4";
+    }
+    else if(long>=mt*5 && long<mt*7){
+      //quater dot
+      d="4";
+      dot=[true];
+    }
+    else if(long>=mt*7 && long<mt*10){
+      // white
+      d="2";
+    }
+    else if(long>=mt*10 && long<mt*14){
+      //white dot
+      d="2";
+      dot=[true];
+    }
+    else{
+      //round
+      d="1";
+    }
+    this.addNote({keys: [data.note], duration: d, dot: dot});
+  }
+
   handleClick(note) {
-    console.log(note);
-    console.log("this should update the stave");
+    console.log(this);
+    this.addNote({keys: [note], duration: "4"});
   };
 
   addNote(note) {
-    console.log("New note : " + note.keys);
     this.setState({
       notes: this.state.notes.concat([note])
     });
@@ -46,9 +68,8 @@ class App extends React.Component {
     return (
       <div className="App">
         <h1>Music transcriber</h1>
-        <Piano clickHandler={this.handleClick} />
+        <Piano clickHandler={this.handleClick} mouseUpHandler={ this.handlemouseUp } />
         <br />
-        <button onClick={() => this.addNote({keys: ["C/5", "Eb/5", "G#/5"], duration: "4", dot:[false,true,true]})}> Add B/4 </button>
         <Staff clef='treble' timeSignature='4/4' notes={this.state.notes}/>
       </div>
     );

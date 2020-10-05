@@ -15,7 +15,7 @@ class Staff extends React.Component {
         super(props);
 
         this.VF = VexFlow.Flow;
-        this.width = 600;
+        this.width = 800;
         this.height = 150;
 
         // Refs for the div container and the renderer
@@ -32,8 +32,13 @@ class Staff extends React.Component {
         for (const n in unparsedNotes){
             const keys=unparsedNotes[n].keys;
             const duration=unparsedNotes[n].duration
-            barSum+=1/duration;
             var dot= unparsedNotes[n].dot!==undefined ? unparsedNotes[n].dot : null;
+            if(dot!==null && dot[0]){
+                barSum+=1/duration+1/(duration*2);
+            }
+            else{
+                barSum+=1/duration;
+            }
             const note=new StaveNote({
                 clef:this.props.clef,
                 keys:keys,
@@ -53,11 +58,12 @@ class Staff extends React.Component {
                     note.addDot(d);
                 }
             }
-            newUnparsednotes.push(note);
-            if(barSum>=1){
+            if(barSum>1){
                 newUnparsednotes.push(new BarNote());
-                barSum=0;
+                barSum=1/duration;
             }
+            newUnparsednotes.push(note);
+            
         }
         return newUnparsednotes;
         /*return unparsedNotes
@@ -131,11 +137,11 @@ class Staff extends React.Component {
         this.parsedNotes = this.parseNotes(this.props.notes);
         // Update context
         this.context = this.renderer.getContext()
-        
         // Formatter
         Formatter.FormatAndDraw(this.context, this.stave, this.parsedNotes, {
-           auto_beam: true,
+            auto_beam: true,
         });
+        
     }
 
     paint () {
@@ -146,8 +152,9 @@ class Staff extends React.Component {
         this.group = this.context.openGroup();
 
         this.paintStaff();
-        this.paintNotes();
-
+        if(this.props.notes.length>0){
+            this.paintNotes();
+        }
         // Close group:
         this.context.closeGroup();
     }
@@ -159,13 +166,13 @@ class Staff extends React.Component {
     }
 
     componentDidMount () {
-        console.log("component mounted " + this.props.notes.map(note => note.keys));
+        //console.log("component mounted " + this.props.notes.map(note => note.keys));
         
         this.paint();
     }
 
     componentDidUpdate () {
-        console.log("component updated " + this.props.notes.map(note => note.keys));
+        //console.log("component updated " + this.props.notes.map(note => note.keys));
 
         this.clear();
         this.paint();

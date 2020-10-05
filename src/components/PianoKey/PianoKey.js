@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from "prop-types";
 import "./PianoKey.css";
-import playTone from "../../libs/simpleTones"
+import playTone from "../../libs/simpleTones";
 
 /* 
 * https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API
@@ -27,6 +27,7 @@ class PianoKey extends React.Component {
     keyboardLetter: PropTypes.string,
     hasSharpKey: PropTypes.bool,
     clickHandler: PropTypes.func,
+    mouseUpHandler: PropTypes.func
   };
 
   abcNotes = {
@@ -39,30 +40,42 @@ class PianoKey extends React.Component {
     "Si": 'B'
   };
 
+  onMouseDown = () =>{
+    this.start=Date.now();
+  }
+
+  onMouseUp = () =>{
+    const t=Date.now() - this.start;
+    var vexflowNote = this.props.note + "/" + this.props.octave;
+    this.props.mouseUpHandler({time:t, note:vexflowNote});
+  }
+
+  onMouseUpSharp = () =>{
+    const t=Date.now() - this.start;
+    var vexflowNote = this.props.note + "#/" + this.props.octave;
+    this.props.mouseUpHandler({time:t, note:vexflowNote});
+  }
+
   handleClick = () => {
     var abcNoteWithOctave = this.props.note + this.props.octave;
     playTone(abcNoteWithOctave);
-
-    this.props.clickHandler(abcNoteWithOctave);
   };
 
   handleClickSharp = () => {
     var abcNoteWithOctave = this.props.note + "#" + this.props.octave;
     playTone(abcNoteWithOctave);
-
-    this.props.clickHandler(abcNoteWithOctave);
   };
 
   render() {
     //const className = this.props.blackKey ? "component-key black" : "component-key";
     return (
       <div className="component-key">
-        <button className="white" onClick={this.handleClick}>
+        <button className="white" onClick={this.handleClick} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp} >
           {this.props.note}
         </button>
         { 
           this.props.hasSharpKey && 
-          <button className="black" onClick={this.handleClickSharp}>
+          <button className="black" onClick={this.handleClickSharp} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUpSharp}>
             {this.props.note + "#"}
           </button> 
         }
