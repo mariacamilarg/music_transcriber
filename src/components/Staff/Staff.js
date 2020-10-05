@@ -1,105 +1,181 @@
-import React, { useRef, useEffect } from 'react'
+import React from 'react'
+import PropTypes from "prop-types";
 import VexFlow from 'vexflow'
 import './Staff.css';
 
-// ECRIRE SOURCE DU CODE
-/*
-const VF = VexFlow.Flow
-const { Formatter, Renderer, Stave, StaveNote } = VF
-const clef='treble';
-const timeSignature='4/4';
-const width=600;
-const height=150;
+class Staff extends React.Component {
 
+    static propTypes = {
+        clef: PropTypes.string,
+        timeSignature: PropTypes.string,
+        notes: PropTypes.array,
+    };
 
+    constructor(props){
+        super(props);
 
-function Staff(props) { 
-    const container = useRef() //const
-    const rendererRef = useRef()   //const
-    const notes= props.mynotes
-    
-    useEffect(() => {
+        this.VF = VexFlow.Flow;
+        this.width = 600;
+        this.height = 150;
+
+        // Refs for the div container and the renderer
+        this.container = React.createRef();
+        this.rendererRef = React.createRef();
+    }
+
+    parseNotes (unparsedNotes) {
+
+        // VF
+        var barSum=0;
+        const { StaveNote, Accidental, BarNote } = this.VF;
+        const newUnparsednotes=[];
+        for (const n in unparsedNotes){
+            const keys=unparsedNotes[n].keys;
+            const duration=unparsedNotes[n].duration
+            barSum+=1/duration;
+            var dot= unparsedNotes[n].dot!==undefined ? unparsedNotes[n].dot : null;
+            const note=new StaveNote({
+                clef:this.props.clef,
+                keys:keys,
+                duration:duration
+            });
+            for (const s in keys){
+                var str=String(keys[s]);
+                if(str.includes("#")){
+                    note.addAccidental(s, new Accidental("#"));
+                }
+                if(str.includes("b")){
+                    note.addAccidental(s, new Accidental("b"));
+                }
+            }
+            for(var d in dot){
+                if(dot[d]){
+                    note.addDot(d);
+                }
+            }
+            newUnparsednotes.push(note);
+            if(barSum>=1){
+                newUnparsednotes.push(new BarNote());
+                barSum=0;
+            }
+        }
+        return newUnparsednotes;
+        /*return unparsedNotes
+            .map(
+                ({ keys, duration = '1' }) =>
+                    new StaveNote({
+                        clef: this.props.clef,
+                        keys: keys,
+                        duration: duration,
+                    })
+            );
+        */
+        // return unparsedNotes
+        //     .map(
+        //         note => (typeof note === 'string' ? { key: note } : note)
+        //     )
+        //     .map(
+        //         note => Array.isArray(note) ? { key: note[0], duration: note[1] } : note
+        //     )
+        //     .map(
+        //         ({ key, ...rest }) =>
+        //             typeof key === 'string'
+        //             ? { key: key.includes('/') ? key : `${key[0]}/${key.slice(1)}`, ...rest, }
+        //             : rest
+        //     )
+        //     .map(
+        //         ({ key, keys, duration = '1' }) =>
+        //             new StaveNote({
+        //                 keys: key ? [key] : keys,
+        //                 duration: String(duration),
+        //             })
+        //     );
+    }
+
+    initializeRenderer() {
+        // VF
+        const { Renderer } = this.VF;
+
+        // Renderer
+        if (this.rendererRef.current == null) {
+            this.rendererRef.current = new Renderer(this.container.current, Renderer.Backends.SVG);
+        }
+
+        this.renderer = this.rendererRef.current;
+        this.renderer.resize(this.width, this.height);
+    }
+
+    initializeContext() {
+        // Context
+        this.context = this.renderer.getContext()
+        this.context.setFont('Arial', 10, '').setBackgroundFillStyle('#eed')
+    }
+
+    paintStaff () {
         
-      if (rendererRef.current == null) {
-        rendererRef.current = new Renderer(container.current, Renderer.Backends.SVG);
-      }
+        // VF
+        const { Stave } = this.VF;
 
-      const renderer = rendererRef.current //const
-      renderer.resize(width, height)
+        // Stave
+        this.stave = new Stave(0, 0, this.width);
+        this.stave.addClef(this.props.clef).addTimeSignature(this.props.timeSignature);
+        this.stave.setContext(this.context).draw()
+    }
 
-      const context = renderer.getContext()//const
-      context.setFont('Arial', 10, '').setBackgroundFillStyle('#eed')
+    paintNotes () {
 
-      const stave = new Stave(0, 0, width) //const
-      stave.setWidth(width)
-      stave.addClef(clef).addTimeSignature(timeSignature)
-      stave.setContext(context).draw()
+        // VF
+        const { Formatter } = this.VF;
 
-      //draw notes
-      const processedNotes = notes //const
-      .map(note => (typeof note === 'string' ? { key: note } : note))
-      .map(note =>
-           Array.isArray(note) ? { key: note[0], duration: note[1] } : note
-      )
-      .map(({ key, ...rest }) =>
-          typeof key === 'string'
-          ? {
-              key: key.includes('/') ? key : `${key[0]}/${key.slice(1)}`,
-              ...rest,
-              }
-           : rest
-       )
-       .map(
-           ({ key, keys, duration = '1' }) =>
-           new StaveNote({
-               keys: key ? [key] : keys,
-               duration: String(duration),
-           })
-       )
-
-       Formatter.FormatAndDraw(context, stave, processedNotes, {
-           auto_beam: true,
-       })
-    })
-
-    return (<div ref={container}/>);
-
-}
-*/
-
-function Staff(props) { 
-    const VF = VexFlow.Flow
-    const { Formatter, Renderer} = VF//, Stave, StaveNote } = VF
-    const container = useRef() //const
-    const rendererRef = useRef()   //const
-    const notes= props.mynotes
-    const stave= props.stave
-    const width=props.width
-    const height=props.height
-    
-    useEffect(() => {
+        // Notes
+        this.parsedNotes = this.parseNotes(this.props.notes);
+        // Update context
+        this.context = this.renderer.getContext()
         
-      if (rendererRef.current == null) {
-        rendererRef.current = new Renderer(container.current, Renderer.Backends.SVG);
-      }
-
-      const renderer = rendererRef.current //const
-      renderer.resize(width, height)
-
-      const context = renderer.getContext()//const
-      context.setFont('Arial', 10, '').setBackgroundFillStyle('#eed')
-
-      stave.setContext(context).draw()
-
-       Formatter.FormatAndDraw(context, stave, notes, {
+        // Formatter
+        Formatter.FormatAndDraw(this.context, this.stave, this.parsedNotes, {
            auto_beam: true,
-       })
-    })
+        });
+    }
 
-    return (<div ref={container}/>);
+    paint () {
+        this.initializeRenderer();
+        this.initializeContext();
 
+        // Open Group
+        this.group = this.context.openGroup();
+
+        this.paintStaff();
+        this.paintNotes();
+
+        // Close group:
+        this.context.closeGroup();
+    }
+
+    clear () {
+        // Delete the existing group to paint again
+        this.context = this.renderer.getContext();
+        this.context.svg.removeChild(this.group);
+    }
+
+    componentDidMount () {
+        console.log("component mounted " + this.props.notes.map(note => note.keys));
+        
+        this.paint();
+    }
+
+    componentDidUpdate () {
+        console.log("component updated " + this.props.notes.map(note => note.keys));
+
+        this.clear();
+        this.paint();
+    }
+
+    render(){
+        return (
+            <div id='Stave' ref={this.container} />
+        );
+    }
 }
-
-
 
 export default Staff;

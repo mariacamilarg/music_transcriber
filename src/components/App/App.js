@@ -1,34 +1,44 @@
 import React from 'react';
-import MyStaff from '../Staff/MyStaff';
-//import Staff from "../Staff/Staff";
-//import StaveClass from '../Staff/StaveClass';
-
-import './App.css';
-
 import Piano from '../Piano/Piano';
+import Staff from '../Staff/Staff';
+//import StaffNote from '../Staff/StaffNote';
+import './App.css';
 
 class App extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      msg: "this should update the stave",
-      operation: null,
-      notes: ["c/4","d/4", "e/4", "f/4", "g/4", "a/4"]
+      notes: [
+        {
+          keys: ["Bb/4"],
+          duration: "2",
+        },
+        {
+          keys: ["D/4"],
+          duration: "2"
+        },
+        {
+          keys: ["E/4"],
+          duration: "1",
+        }        
+        // new StaffNote(["c/4"], "1"),
+        // new StaffNote(["d/4"], "1"),
+        // new StaffNote(["e/4"], "1"),
+      ],  
     };
   };
 
   handleClick(note) {
-    //this.setState(calculate(this.state, buttonName));
     console.log(note);
-    //console.log(this.state.msg);
+    console.log("this should update the stave");
   };
 
   addNote(note) {
-    console.log("New note : " + note);
-    console.log(this.state.notes);
-    this.state.notes.push("b/4");
-    console.log(this.state.notes);
+    console.log("New note : " + note.keys);
+    this.setState({
+      notes: this.state.notes.concat([note])
+    });
     //this.forceUpdate();
   }
 
@@ -38,8 +48,8 @@ class App extends React.Component {
         <h1>Music transcriber</h1>
         <Piano clickHandler={this.handleClick} />
         <br />
-        <button onClick={() => this.addNote("b/4")}> Add B/4 </button>
-        <MyStaff clef='treble' timeSignature='4/4' notes={this.state.notes}/>
+        <button onClick={() => this.addNote({keys: ["C/5", "Eb/5", "G#/5"], duration: "4", dot:[false,true,true]})}> Add B/4 </button>
+        <Staff clef='treble' timeSignature='4/4' notes={this.state.notes}/>
       </div>
     );
   }
