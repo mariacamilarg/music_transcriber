@@ -46,6 +46,7 @@ class PianoKey extends React.Component {
 
   onMouseUp = () =>{
     const t=Date.now() - this.start;
+    this.start=0;
     var vexflowNote = this.props.note + "/" + this.props.octave;
     this.props.mouseUpHandler({time:t, note:vexflowNote});
   }
@@ -58,6 +59,7 @@ class PianoKey extends React.Component {
 
   handleClick = () => {
     var abcNoteWithOctave = this.props.note + this.props.octave;
+    console.log(abcNoteWithOctave);
     playTone(abcNoteWithOctave);
   };
 
@@ -70,7 +72,7 @@ class PianoKey extends React.Component {
     //const className = this.props.blackKey ? "component-key black" : "component-key";
     return (
       <div className="component-key">
-        <button className="white" onClick={this.handleClick} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp} >
+        <button className="white" onClick={this.handleClick} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp}>
           {this.props.note}
         </button>
         { 
