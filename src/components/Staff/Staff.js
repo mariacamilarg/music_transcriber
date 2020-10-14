@@ -29,7 +29,7 @@ class Staff extends React.Component {
         var barSum=0;
         const { StaveNote, Accidental, BarNote } = this.VF;
         const newUnparsednotes=[];
-        var last=unparsedNotes.length-1;
+        //var last=unparsedNotes.length-1;
         for (const n in unparsedNotes){
             const keys=unparsedNotes[n].keys;
             const duration=unparsedNotes[n].duration
@@ -63,7 +63,7 @@ class Staff extends React.Component {
                 newUnparsednotes.push(new BarNote());
                 barSum=1/duration;
             }
-            if (parseInt(n)=== parseInt(last)){
+            if (parseInt(n)=== parseInt(this.props.selected)){
                 note.setStyle({ fillStyle: 'red', strokeStyle: 'red' });
             }
             newUnparsednotes.push(note);

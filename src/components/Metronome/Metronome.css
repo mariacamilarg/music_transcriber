@@ -1,0 +1,60 @@
+.Component-Metronome {
+    margin-top: 1cm;
+    display: inline-flex;
+  }
+
+#metrInput{
+    width: 2cm;
+    height: 30px;
+    text-align: center;
+    font-size: 16px;
+}
+
+#picture{
+    background-image: url("https://png.pngtree.com/png-vector/20190928/ourmid/pngtree-classic-metronome-icon-cartoon-style-png-image_1753285.jpg");
+    background-size: 70px;
+    height: 70px;
+    width: 70px;
+    border-color: black;
+    border-radius: 10%;
+    margin-right: 10px;
+    margin-top: 20px;
+}
+
+#plus{
+    width: 0;
+    height: 0;
+    padding: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 2px;
+    background-color:  transparent;
+    border-style: solid;
+    border-left-width: 10px;
+    border-right-width: 10px;
+    border-bottom-width: 20px;
+    border-top-width: 0px;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: gray;
+}
+
+#minus {
+    width: 0;
+    height: 0;
+    padding: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2px;
+    background-color:  transparent;
+    border-style: solid;
+    border-left-width: 10px;
+    border-right-width: 10px;
+    border-bottom-width: 0px;
+    border-top-width: 20px;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-top-color: gray;
+  }
+
+

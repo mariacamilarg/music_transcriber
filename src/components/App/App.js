@@ -1,6 +1,7 @@
 import React from 'react';
 import Piano from '../Piano/Piano';
 import Staff from '../Staff/Staff';
+import Metronome from '../Metronome/Metronome';
 import playTone from "../../libs/simpleTones";
 //import StaffNote from '../Staff/StaffNote';
 import './App.css';
@@ -57,18 +58,23 @@ class App extends React.Component {
     super(props);
     this.state = {
       notes: [],
-      octave:"4"  
+      octave:"4",  
+      selected:0,
+      tempo:60
     };
-    this.tempo=120;
     this.start=0;
     this.key="";
+    this.nbNotes=0;
     //this.handleClick = this.handleClick.bind(this);
     this.handlemouseUp = this.handlemouseUp.bind(this);
+    this.bpmPlus = this.bpmPlus.bind(this);
+    this.bpmMinus = this.bpmMinus.bind(this);
+    this.setBPM = this.setBPM.bind(this);
   };
 
   handlemouseUp(data){
     var long= data.time;
-    var mt = ((60*1000)/this.tempo)/4;
+    var mt = ((60*1000)/this.state.tempo)/4;
     var d="0";
     var dot=[false];
     if(long<mt*3){
@@ -106,9 +112,13 @@ class App extends React.Component {
   };*/
 
   addNote(note) {
+
     this.setState({
-      notes: this.state.notes.concat([note])
+      notes: this.state.notes.concat([note]),
+      selected: this.nbNotes
     });
+    
+    this.nbNotes+=1;
     //this.forceUpdate();
   }
 
@@ -129,95 +139,127 @@ class App extends React.Component {
       this.start=Date.now();
     }
     // ArrowUp : tone up
-    if(String(e.key)==="ArrowUp"){
-      note=this.state.notes.pop();
+    if(String(e.key)==="ArrowUp" && this.state.notes.length>0){
+      note=this.state.notes[this.state.selected];//.pop();
       keys=note.keys;
       newKeys=[];
       for(k in keys){
         n=String(keys[k]).split('/');
         newNote="";
         playToneNote="";
-        if(n[0].includes("B")){
-          oc=parseInt(n[1])+1
-          newNote="C/"+String(oc);
-          playToneNote="C"+String(oc);
-        }
-        else{
-          newNote=this.upperNote[n[0]]+"/"+n[1];
-          playToneNote=this.upperNote[n[0]]+n[1];
-        }
-        newKeys.push(newNote);
-        playTone(playToneNote);
-      }
-      note.keys=newKeys
-      this.setState({
-        notes: this.state.notes.concat([note])
-      });
-    }
-    //ArrowDown : tone down
-    else if(String(e.key)==="ArrowDown"){
-      note=this.state.notes.pop();
-      keys=note.keys;
-      newKeys=[];
-      for(k in keys){
-        n=String(keys[k]).split('/');
-        newNote="";
-        playToneNote="";
-        if(n[0]==="C"){
-          console.log("Octave down");
-          oc=parseInt(n[1])-1
-          newNote="B/"+String(oc);
-          playToneNote="B"+String(oc);
-        }
-        else{
-          newNote=this.downerNote[n[0]]+"/"+n[1];
-          playToneNote=this.downerNote[n[0]]+n[1];
-        }
-        console.log(playToneNote);
-        newKeys.push(newNote);
-        playTone(playToneNote);
-      }
-      note.keys=newKeys
-      this.setState({
-        notes: this.state.notes.concat([note])
-      });
-    }
-    else if(String(e.key)==="ArrowLeft" || String(e.key)==="ArrowRight"){
-      note=this.state.notes.pop();
-      var duration=parseInt(note.duration);
-      var dot=note.dot;
-      console.log("Dot:"+dot);
-      if(String(e.key)==="ArrowLeft"){
-        if(duration<8){
-          if(dot[0]===true){
-            note.dot[0]=false;
-          }
-          else if(duration===4){
-            duration=duration*2;
+        if(e.shiftKey===false){
+          if(n[0].includes("B")){
+            oc=parseInt(n[1])+1
+            newNote="C/"+String(oc);
+            playToneNote="C"+String(oc);
           }
           else{
-            note.dot[0]=true;
-            duration=duration*2;
+            newNote=this.upperNote[n[0]]+"/"+n[1];
+            playToneNote=this.upperNote[n[0]]+n[1];
           }
+        }
+        else{
+          oc=parseInt(n[1])+1;
+          newNote=n[0]+"/"+String(oc);
+          playToneNote=n[0]+String(oc);
+        }
+        newKeys.push(newNote);
+        playTone(playToneNote);
+      }
+      note.keys=newKeys;
+      this.state.notes.splice(this.state.selected,1,note);
+      this.setState({
+        notes: this.state.notes
+      });
+    }
+    
+    //ArrowDown : tone down
+    else if(String(e.key)==="ArrowDown" && this.state.notes.length>0){
+      note=this.state.notes[this.state.selected];//.pop();
+      keys=note.keys;
+      newKeys=[];
+      for(k in keys){
+        n=String(keys[k]).split('/');
+        newNote="";
+        playToneNote="";
+        if(e.shiftKey){
+          oc=parseInt(n[1])-1;
+          newNote=n[0]+"/"+String(oc);
+          playToneNote=n[0]+String(oc);
+        }
+        else{
+          if(n[0]==="C"){
+            oc=parseInt(n[1])-1
+            newNote="B/"+String(oc);
+            playToneNote="B"+String(oc);
+          }
+          else{
+            newNote=this.downerNote[n[0]]+"/"+n[1];
+            playToneNote=this.downerNote[n[0]]+n[1];
+          }
+        }
+        newKeys.push(newNote);
+        playTone(playToneNote);
+      }
+      note.keys=newKeys;
+      this.state.notes.splice(this.state.selected,1,note);
+      this.setState({
+        notes: this.state.notes
+      });
+    }
+    else if((String(e.key)==="ArrowLeft" || String(e.key)==="ArrowRight") && this.state.notes.length>0){
+      if(e.shiftKey){
+        if(String(e.key)==="ArrowLeft"){
+          this.setState({
+            selected: Math.max(0,this.state.selected-1)
+          });
+        }
+        else{
+          this.setState({
+            selected: Math.min(this.nbNotes-1,this.state.selected+1)
+          });
         }
       }
       else{
-        if(duration>1){
-          if(dot[0]===true || duration===8){
-            note.dot[0]=false;
-            duration=duration/2;
-          }
-          else {
-            note.dot[0]=true
+        note=this.state.notes[this.state.selected];//.pop();
+        var duration=parseInt(note.duration);
+        var dot=note.dot;
+        if(String(e.key)==="ArrowLeft"){
+          if(duration<8){
+            if(dot[0]===true){
+              note.dot[0]=false;
+            }
+            else if(duration===4){
+              duration=duration*2;
+            }
+            else{
+              note.dot[0]=true;
+              duration=duration*2;
+            }
           }
         }
+        else{
+          if(duration>1){
+            if(dot[0]===true || duration===8){
+              note.dot[0]=false;
+              duration=duration/2;
+            }
+            else {
+              note.dot[0]=true
+            }
+          }
+        }
+        dot=note.dot;
+        var newNote={keys:note.keys, duration:String(duration), dot:dot};
+        /*this.setState({
+          notes: this.state.notes.concat(newNote)
+        });*/
+
+        this.state.notes.splice(this.state.selected,1,newNote);
+        this.setState({
+          notes: this.state.notes
+        });
       }
-      dot=note.dot;
-      var newNote={keys:note.keys, duration:String(duration), dot:dot};
-      console.log(newNote);
-      this.setState({
-        notes: this.state.notes.concat(newNote)
-      });
     }
   }
 
@@ -243,13 +285,36 @@ class App extends React.Component {
     }
   }
 
+  bpmPlus(){
+    console.log("++");
+    this.setState({
+      tempo: this.state.tempo+1
+    });
+  }
+
+  bpmMinus(){
+    console.log("--");
+    this.setState({
+      tempo: this.state.tempo-1
+    });
+  }
+
+  setBPM(newBPM){
+    this.setState({
+      tempo: newBPM
+    });
+  }
+
   render(){
     return (
       <div className="App" tabIndex={0} onKeyDown={(e) => this.onKeyDown(e)} onKeyUp={(e)=>this.onKeyUp(e)}>
         <h1>Music transcriber</h1>
         <Piano clickHandler={this.handleClick} mouseUpHandler={ this.handlemouseUp } octave={this.state.octave}/>
         <br />
-        <Staff clef='treble' timeSignature='4/4' notes={this.state.notes}/>
+        <div className="DownPart">
+        <Staff clef='treble' timeSignature='4/4' notes={this.state.notes} selected={this.state.selected}/>
+        <Metronome bpm={this.state.tempo} clickMinus={this.bpmMinus} clickPlus={this.bpmPlus} changeInput={this.setBPM}/>
+        </div>
       </div>
     );
   }
