@@ -2,19 +2,14 @@
   text-align: center;
 }
 
-.components-upper {
+.components-top {
   display: inline-block;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
+/* .components-middle{
+  display: inline-block;
+} */
 
-#Stave{
-  margin-top: 1cm;
-} 
-
-.DownPart{
-  display: inline-flex;
+.components-bottom{
+  display: inline-block;
 }

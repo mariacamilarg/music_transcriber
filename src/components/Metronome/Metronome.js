@@ -24,25 +24,27 @@ class Metronome extends React.Component {
   }
 
   handleClickPlus = ()=> {
-      this.props.clickPlus();
+    this.props.clickPlus();
   }
 
   handleClickMinus= ()=> {
-      this.props.clickMinus();
+    this.props.clickMinus();
   }
 
   handleChange = (event) => {
-        if(event.target.value>0 && event.target.value<300){
-            var newBPM=parseInt(event.target.value);
-            this.props.changeInput(newBPM);
-        }
+    if(event.target.value>0 && event.target.value<300){
+        var newBPM=parseInt(event.target.value);
+        this.props.changeInput(newBPM);
+    }
   }
 
   startBit = () =>{
-      this.state.play=!this.state.play;
-      if(this.state.play){
-        this.makeBit();
-      }
+    this.setState({
+      play: !this.state.play
+    });
+    if(this.state.play){
+      this.makeBit();
+    }
   }
 
   makeBit = () =>{

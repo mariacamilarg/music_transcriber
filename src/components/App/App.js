@@ -2,7 +2,7 @@ import React from 'react';
 import Piano from '../Piano/Piano';
 import Video from '../Video/Video';
 import Staff from '../Staff/Staff';
-import Metronome from '../Metronome/Metronome';
+import Controls from '../Controls/Controls';
 import playTone from "../../libs/simpleTones";
 //import StaffNote from '../Staff/StaffNote';
 import './App.css';
@@ -77,6 +77,7 @@ class App extends React.Component {
     this.setBPM = this.setBPM.bind(this);
     this.octavePlus = this.octavePlus.bind(this);
     this.octaveMinus = this.octaveMinus.bind(this);
+    this.play = this.play.bind(this);
   };
 
   // FUNCTIONS
@@ -259,7 +260,7 @@ class App extends React.Component {
           }
         }
         dot=note.dot;
-        var newNote={keys:note.keys, duration:String(duration), dot:dot};
+        newNote={keys:note.keys, duration:String(duration), dot:dot};
         /*this.setState({
           notes: this.state.notes.concat(newNote)
         });*/
@@ -311,7 +312,7 @@ class App extends React.Component {
   }
 
   octavePlus() {
-    if (this.state.octave != "8") {
+    if (this.state.octave !== "8") {
       this.setState({
         octave: parseInt(this.state.octave) + 1 + ""
       });
@@ -319,11 +320,15 @@ class App extends React.Component {
   }
 
   octaveMinus() {
-    if (this.state.octave != "0") {
+    if (this.state.octave !== "0") {
       this.setState({
         octave: parseInt(this.state.octave) - 1 + ""
       });
     }
+  }
+
+  play(){
+    this.staff.player();
   }
 
   // RENDER
@@ -333,14 +338,15 @@ class App extends React.Component {
       <div className="App" tabIndex={0} onKeyDown={(e) => this.onKeyDown(e)} onKeyUp={(e)=>this.onKeyUp(e)}>
         <h1>Music transcriber</h1>
         <br />
-        <div className="components-upper">
+        <div className="components-top">
           <Piano octave={this.state.octave} clickHandler={this.handleClick} mouseUpHandler={this.handlemouseUp} octavePlus={this.octavePlus} octaveMinus={this.octaveMinus} />
           <Video url="https://www.youtube.com/watch?v=Vgt1d3eAm7A" />
         </div>
-        <br />
-        <div className="DownPart">
-          <Staff clef='treble' timeSignature='4/4' notes={this.state.notes} selected={this.state.selected} tempo={this.state.tempo}/>
-          <Metronome bpm={this.state.tempo} clickMinus={this.bpmMinus} clickPlus={this.bpmPlus} changeInput={this.setBPM}/>
+        <div className="components-middle">
+          <Controls bpm={this.state.tempo} bpmMinus={this.bpmMinus} bpmPlus={this.bpmPlus} changeBpm={this.setBPM} play={this.play}/>
+        </div>
+        <div className="components-bottom">
+          <Staff ref={child => {this.staff = child}} clef='treble' timeSignature='4/4' notes={this.state.notes} selected={this.state.selected} tempo={this.state.tempo}/>
         </div>
       </div>
     );

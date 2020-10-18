@@ -17,7 +17,7 @@ class Staff extends React.Component {
         super(props);
 
         this.VF = VexFlow.Flow;
-        this.width = 800;
+        this.width = 900;
         this.height = 150;
 
         // Refs for the div container and the renderer
@@ -183,12 +183,7 @@ class Staff extends React.Component {
 
     render(){
         return (
-            <div>
-                <div id='Stave' ref={this.container} />
-                <button onClick={this.player}>Play</button>
-            </div>
-            
-
+            <div id='Stave' ref={this.container} />
         );
     }
 }
