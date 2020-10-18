@@ -13,7 +13,7 @@ import './Video.css';
 class Video extends React.Component {
 
   static propTypes = {
-    url: PropTypes.string, hdfhdshfoisd
+    url: PropTypes.string,
   };
 
   constructor(props) {

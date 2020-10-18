@@ -7,6 +7,7 @@ import PianoKey from '../PianoKey/PianoKey';
 class Piano extends React.Component {
 
   static propTypes = {
+    octave: PropTypes.string,
     clickHandler: PropTypes.func,
     mouseUpHandler: PropTypes.func,
   };
