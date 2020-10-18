@@ -1,5 +1,6 @@
 import React from 'react';
 import Piano from '../Piano/Piano';
+import Video from '../Video/Video';
 import Staff from '../Staff/Staff';
 import Metronome from '../Metronome/Metronome';
 import playTone from "../../libs/simpleTones";
@@ -315,7 +316,11 @@ class App extends React.Component {
     return (
       <div className="App" tabIndex={0} onKeyDown={(e) => this.onKeyDown(e)} onKeyUp={(e)=>this.onKeyUp(e)}>
         <h1>Music transcriber</h1>
-        <Piano clickHandler={this.handleClick} mouseUpHandler={ this.handlemouseUp } octave={this.state.octave}/>
+        <br />
+        <div className="components-upper">
+          <Piano octave={this.state.octave} clickHandler={this.handleClick} mouseUpHandler={this.handlemouseUp} />
+          <Video url="https://www.youtube.com/watch?v=Vgt1d3eAm7A" />
+        </div>
         <br />
         <div className="DownPart">
         <Staff clef='treble' timeSignature='4/4' notes={this.state.notes} selected={this.state.selected} tempo={this.state.tempo}/>
