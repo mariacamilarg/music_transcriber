@@ -103,6 +103,9 @@ class App extends React.Component {
       //round
       d="1";
     }
+    if(data.rest===true){
+      d+="r";
+    }
     this.addNote({keys: [data.note], duration: d, dot: dot});
   }
 
@@ -270,6 +273,7 @@ class App extends React.Component {
     this.start=0;
     var n=undefined;
     var data=undefined;
+    var rest=false;
     if(this.keyToNotes[e.key]!==undefined){
       this.playNote(this.keyToNotes[e.key]+this.state.octave);
       n=this.keyToNotes[e.key]+"/"+this.state.octave;
@@ -277,10 +281,14 @@ class App extends React.Component {
     else if(this.keyToNotesSharp[e.key]!==undefined){
       this.playNote(this.keyToNotesSharp[e.key]+"#"+this.state.octave);
       n=this.keyToNotesSharp[e.key]+"#/"+this.state.octave;
-      
     }
+    /*else if(e.key==='!'){
+      console.log("rest");
+      n="b/4";
+      //rest=true;
+    }*/
     if(n!==undefined){
-      data={note:n, time:t}
+      data={note:n, time:t, rest:rest}
       this.handlemouseUp(data);
     }
   }
