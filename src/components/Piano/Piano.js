@@ -9,7 +9,19 @@ class Piano extends React.Component {
   static propTypes = {
     octave: PropTypes.string,
     clickHandler: PropTypes.func,
+    mouseUpHandler: PropTypes.func,
   };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      octave:props.octave
+    };
+  };
+
+  handlemouseUp = t =>{
+    this.props.mouseUpHandler(t);
+  }
 
   handleClick = keyNote => {
     this.props.clickHandler(keyNote);
@@ -18,13 +30,13 @@ class Piano extends React.Component {
   render() {
     return (
       <div className="component-piano">
-        <PianoKey note="C" octave={this.props.octave} keyboardLetter="A" clickHandler={this.handleClick} hasSharpKey />
-        <PianoKey note="D" octave={this.props.octave} keyboardLetter="S" clickHandler={this.handleClick} hasSharpKey/>
-        <PianoKey note="E" octave={this.props.octave} keyboardLetter="D" clickHandler={this.handleClick} />
-        <PianoKey note="F" octave={this.props.octave} keyboardLetter="F" clickHandler={this.handleClick} hasSharpKey/>
-        <PianoKey note="G" octave={this.props.octave} keyboardLetter="G" clickHandler={this.handleClick} hasSharpKey/>
-        <PianoKey note="A" octave={this.props.octave} keyboardLetter="H" clickHandler={this.handleClick} hasSharpKey/>
-        <PianoKey note="B" octave={this.props.octave} keyboardLetter="J" clickHandler={this.handleClick} />
+        <PianoKey note="C" octave={this.state.octave} keyboardLetter="A" mouseUpHandler={this.handlemouseUp} clickHandler={this.handleClick} hasSharpKey />
+        <PianoKey note="D" octave={this.state.octave} keyboardLetter="S" mouseUpHandler={this.handlemouseUp} clickHandler={this.handleClick} hasSharpKey/>
+        <PianoKey note="E" octave={this.state.octave} keyboardLetter="D" mouseUpHandler={this.handlemouseUp} clickHandler={this.handleClick} />
+        <PianoKey note="F" octave={this.state.octave} keyboardLetter="F" mouseUpHandler={this.handlemouseUp} clickHandler={this.handleClick} hasSharpKey/>
+        <PianoKey note="G" octave={this.state.octave} keyboardLetter="G" mouseUpHandler={this.handlemouseUp} clickHandler={this.handleClick} hasSharpKey/>
+        <PianoKey note="A" octave={this.state.octave} keyboardLetter="H" mouseUpHandler={this.handlemouseUp} clickHandler={this.handleClick} hasSharpKey/>
+        <PianoKey note="B" octave={this.state.octave} keyboardLetter="J" mouseUpHandler={this.handlemouseUp} clickHandler={this.handleClick} />
       </div>
     );
   }
