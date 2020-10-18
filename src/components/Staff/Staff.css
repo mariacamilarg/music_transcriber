@@ -1,11 +1,5 @@
 #Stave{
-    border: 6px, solid, black;
-    background-color: rgb(241, 240, 240);
-    height: 7cm;
-    width: 30cm;
+    height: 4cm;
+    width: 24cm;
 } 
 
-.Staff{
-    text-align: center;
-    align-content: center;
-}

@@ -1,56 +1,318 @@
 import React from 'react';
 import Piano from '../Piano/Piano';
 import Staff from '../Staff/Staff';
+import Metronome from '../Metronome/Metronome';
+import playTone from "../../libs/simpleTones";
 //import StaffNote from '../Staff/StaffNote';
-
 import './App.css';
 
 class App extends React.Component {
 
+  keyToNotes = {
+    "q": 'C',
+    "s": 'D',
+    "d": 'E',
+    "f": 'F',
+    "g": 'G',
+    "h": 'A',
+    "j": 'B'
+  };
+
+  keyToNotesSharp = {
+    "z": 'C',
+    "e": 'D',
+    "t": 'F',
+    "y": 'G',
+    "u": 'A',
+  };
+
+  upperNote = {
+    'C':'C#',
+    'C#':'D',
+    'D' : 'D#',
+    "D#":"E",
+    'E':'F',
+    'F':'F#',
+    'F#':'G',
+    'G':'G#',
+    'G#':'A',
+    'A':'A#',
+    'A#':'B'
+  }
+
+  downerNote = {
+    'C#':'C',
+    'D' : 'C#',
+    "D#":"D",
+    'E':'D#',
+    'F':'E',
+    'F#':'F',
+    'G':'F#',
+    'G#':'G',
+    'A':'G#',
+    'A#':'A',
+    'B':'A#'
+  }
+
   constructor(props) {
     super(props);
     this.state = {
-      notes: [
-        {
-          keys: ["c/4"],
-          duration: "1",
-        },
-        {
-          keys: ["d/4"],
-          duration: "1",
-        },
-        {
-          keys: ["e/4"],
-          duration: "1",
-        }        
-        // new StaffNote(["c/4"], "1"),
-        // new StaffNote(["d/4"], "1"),
-        // new StaffNote(["e/4"], "1"),
-      ],  
+      notes: [],
+      octave:"4",  
+      selected:0,
+      tempo:60
     };
+    this.start=0;
+    this.key="";
+    this.nbNotes=0;
+    //this.handleClick = this.handleClick.bind(this);
+    this.handlemouseUp = this.handlemouseUp.bind(this);
+    this.bpmPlus = this.bpmPlus.bind(this);
+    this.bpmMinus = this.bpmMinus.bind(this);
+    this.setBPM = this.setBPM.bind(this);
   };
 
-  handleClick(note) {
-    console.log(note);
-    console.log("this should update the stave");
-  };
+  handlemouseUp(data){
+    var long= data.time;
+    var mt = ((60*1000)/this.state.tempo)/4;
+    var d="0";
+    var dot=[false];
+    if(long<mt*3){
+      //8th
+      d="8";
+    }
+    else if(long>=mt*3 && long<mt*5){
+      //quater/black
+      d="4";
+    }
+    else if(long>=mt*5 && long<mt*7){
+      //quater dot
+      d="4";
+      dot=[true];
+    }
+    else if(long>=mt*7 && long<mt*10){
+      // white
+      d="2";
+    }
+    else if(long>=mt*10 && long<mt*14){
+      //white dot
+      d="2";
+      dot=[true];
+    }
+    else{
+      //round
+      d="1";
+    }
+    this.addNote({keys: [data.note], duration: d, dot: dot});
+  }
+
+  /*handleClick(note) {
+    console.log(this);
+    this.addNote({keys: [note], duration: "4"});
+  };*/
 
   addNote(note) {
-    console.log("New note : " + note.keys);
+
     this.setState({
-      notes: this.state.notes.concat([note])
+      notes: this.state.notes.concat([note]),
+      selected: this.nbNotes
     });
+    
+    this.nbNotes+=1;
     //this.forceUpdate();
+  }
+
+  playNote(note){
+    playTone(note);
+  }
+
+  onKeyDown = (e) => {
+    var note;
+    var keys;
+    var newKeys;
+    var k;
+    var n;
+    var newNote;
+    var playToneNote;
+    var oc;
+    if(this.start===0 && (this.keyToNotes[e.key]!==undefined || this.keyToNotesSharp[e.key]!==undefined)){
+      this.start=Date.now();
+    }
+    // ArrowUp : tone up
+    if(String(e.key)==="ArrowUp" && this.state.notes.length>0){
+      note=this.state.notes[this.state.selected];//.pop();
+      keys=note.keys;
+      newKeys=[];
+      for(k in keys){
+        n=String(keys[k]).split('/');
+        newNote="";
+        playToneNote="";
+        if(e.shiftKey===false){
+          if(n[0].includes("B")){
+            oc=parseInt(n[1])+1
+            newNote="C/"+String(oc);
+            playToneNote="C"+String(oc);
+          }
+          else{
+            newNote=this.upperNote[n[0]]+"/"+n[1];
+            playToneNote=this.upperNote[n[0]]+n[1];
+          }
+        }
+        else{
+          oc=parseInt(n[1])+1;
+          newNote=n[0]+"/"+String(oc);
+          playToneNote=n[0]+String(oc);
+        }
+        newKeys.push(newNote);
+        playTone(playToneNote);
+      }
+      note.keys=newKeys;
+      this.state.notes.splice(this.state.selected,1,note);
+      this.setState({
+        notes: this.state.notes
+      });
+    }
+    
+    //ArrowDown : tone down
+    else if(String(e.key)==="ArrowDown" && this.state.notes.length>0){
+      note=this.state.notes[this.state.selected];//.pop();
+      keys=note.keys;
+      newKeys=[];
+      for(k in keys){
+        n=String(keys[k]).split('/');
+        newNote="";
+        playToneNote="";
+        if(e.shiftKey){
+          oc=parseInt(n[1])-1;
+          newNote=n[0]+"/"+String(oc);
+          playToneNote=n[0]+String(oc);
+        }
+        else{
+          if(n[0]==="C"){
+            oc=parseInt(n[1])-1
+            newNote="B/"+String(oc);
+            playToneNote="B"+String(oc);
+          }
+          else{
+            newNote=this.downerNote[n[0]]+"/"+n[1];
+            playToneNote=this.downerNote[n[0]]+n[1];
+          }
+        }
+        newKeys.push(newNote);
+        playTone(playToneNote);
+      }
+      note.keys=newKeys;
+      this.state.notes.splice(this.state.selected,1,note);
+      this.setState({
+        notes: this.state.notes
+      });
+    }
+    else if((String(e.key)==="ArrowLeft" || String(e.key)==="ArrowRight") && this.state.notes.length>0){
+      if(e.shiftKey){
+        if(String(e.key)==="ArrowLeft"){
+          this.setState({
+            selected: Math.max(0,this.state.selected-1)
+          });
+        }
+        else{
+          this.setState({
+            selected: Math.min(this.nbNotes-1,this.state.selected+1)
+          });
+        }
+      }
+      else{
+        note=this.state.notes[this.state.selected];//.pop();
+        var duration=parseInt(note.duration);
+        var dot=note.dot;
+        if(String(e.key)==="ArrowLeft"){
+          if(duration<8){
+            if(dot[0]===true){
+              note.dot[0]=false;
+            }
+            else if(duration===4){
+              duration=duration*2;
+            }
+            else{
+              note.dot[0]=true;
+              duration=duration*2;
+            }
+          }
+        }
+        else{
+          if(duration>1){
+            if(dot[0]===true || duration===8){
+              note.dot[0]=false;
+              duration=duration/2;
+            }
+            else {
+              note.dot[0]=true
+            }
+          }
+        }
+        dot=note.dot;
+        var newNote={keys:note.keys, duration:String(duration), dot:dot};
+        /*this.setState({
+          notes: this.state.notes.concat(newNote)
+        });*/
+
+        this.state.notes.splice(this.state.selected,1,newNote);
+        this.setState({
+          notes: this.state.notes
+        });
+      }
+    }
+  }
+
+  
+
+  onKeyUp = (e) => {
+    const t=Date.now() - this.start;
+    this.start=0;
+    var n=undefined;
+    var data=undefined;
+    if(this.keyToNotes[e.key]!==undefined){
+      this.playNote(this.keyToNotes[e.key]+this.state.octave);
+      n=this.keyToNotes[e.key]+"/"+this.state.octave;
+    }
+    else if(this.keyToNotesSharp[e.key]!==undefined){
+      this.playNote(this.keyToNotesSharp[e.key]+"#"+this.state.octave);
+      n=this.keyToNotesSharp[e.key]+"#/"+this.state.octave;
+      
+    }
+    if(n!==undefined){
+      data={note:n, time:t}
+      this.handlemouseUp(data);
+    }
+  }
+
+  bpmPlus(){
+    this.setState({
+      tempo: this.state.tempo+1
+    });
+  }
+
+  bpmMinus(){
+    this.setState({
+      tempo: this.state.tempo-1
+    });
+  }
+
+  setBPM(newBPM){
+    this.setState({
+      tempo: newBPM
+    });
   }
 
   render(){
     return (
-      <div className="App">
+      <div className="App" tabIndex={0} onKeyDown={(e) => this.onKeyDown(e)} onKeyUp={(e)=>this.onKeyUp(e)}>
         <h1>Music transcriber</h1>
-        <Piano clickHandler={this.handleClick} />
+        <Piano clickHandler={this.handleClick} mouseUpHandler={ this.handlemouseUp } octave={this.state.octave}/>
         <br />
-        <button onClick={() => this.addNote({keys: ["b/4"], duration: "1"})}> Add B/4 </button>
-        <Staff clef='treble' timeSignature='4/4' notes={this.state.notes}/>
+        <div className="DownPart">
+        <Staff clef='treble' timeSignature='4/4' notes={this.state.notes} selected={this.state.selected} tempo={this.state.tempo}/>
+        <Metronome bpm={this.state.tempo} clickMinus={this.bpmMinus} clickPlus={this.bpmPlus} changeInput={this.setBPM}/>
+        </div>
       </div>
     );
   }

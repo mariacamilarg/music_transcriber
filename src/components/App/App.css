@@ -39,6 +39,9 @@
 }
 
 #Stave{
-  margin: auto;
-  margin-top: 2cm;
+  margin-top: 1cm;
 } 
+
+.DownPart{
+  display: inline-flex;
+}
