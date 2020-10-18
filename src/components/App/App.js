@@ -106,6 +106,7 @@ class App extends React.Component {
     }
     if(data.rest===true){
       d+="r";
+      console.log(d);
     }
     this.addNote({keys: [data.note], duration: d, dot: dot});
   }
@@ -139,7 +140,7 @@ class App extends React.Component {
     var newNote;
     var playToneNote;
     var oc;
-    if(this.start===0 && (this.keyToNotes[e.key]!==undefined || this.keyToNotesSharp[e.key]!==undefined)){
+    if(this.start===0 && (this.keyToNotes[e.key]!==undefined || this.keyToNotesSharp[e.key]!==undefined || e.key==='!')){
       this.start=Date.now();
     }
     // ArrowUp : tone up
@@ -168,7 +169,9 @@ class App extends React.Component {
           playToneNote=n[0]+String(oc);
         }
         newKeys.push(newNote);
-        playTone(playToneNote);
+        if(!String(note.duration).includes('r')){
+          playTone(playToneNote);
+        }
       }
       note.keys=newKeys;
       this.state.notes.splice(this.state.selected,1,note);
@@ -203,7 +206,10 @@ class App extends React.Component {
           }
         }
         newKeys.push(newNote);
-        playTone(playToneNote);
+        if(!String(note.duration).includes('r')){
+          playTone(playToneNote);
+        }
+        
       }
       note.keys=newKeys;
       this.state.notes.splice(this.state.selected,1,note);
@@ -226,7 +232,11 @@ class App extends React.Component {
       }
       else{
         note=this.state.notes[this.state.selected];//.pop();
-        var duration=parseInt(note.duration);
+        var duration=parseInt(note.duration[0]);
+        var rest=false;
+        if(String(note.duration).includes('r')){
+          rest=true;
+        }
         var dot=note.dot;
         if(String(e.key)==="ArrowLeft"){
           if(duration<8){
@@ -254,7 +264,11 @@ class App extends React.Component {
           }
         }
         dot=note.dot;
-        var newNote={keys:note.keys, duration:String(duration), dot:dot};
+        var newDuration=String(duration);
+        if(rest===true){
+          newDuration+='r';
+        }
+        var newNote={keys:note.keys, duration:newDuration, dot:dot};
         /*this.setState({
           notes: this.state.notes.concat(newNote)
         });*/
@@ -283,11 +297,10 @@ class App extends React.Component {
       this.playNote(this.keyToNotesSharp[e.key]+"#"+this.state.octave);
       n=this.keyToNotesSharp[e.key]+"#/"+this.state.octave;
     }
-    /*else if(e.key==='!'){
-      console.log("rest");
-      n="b/4";
-      //rest=true;
-    }*/
+    else if(e.key==='!'){
+      n="B/4";
+      rest=true;
+    }
     if(n!==undefined){
       data={note:n, time:t, rest:rest}
       this.handlemouseUp(data);
