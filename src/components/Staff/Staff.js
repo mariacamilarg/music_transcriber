@@ -18,7 +18,7 @@ class Staff extends React.Component {
 
         this.VF = VexFlow.Flow;
         this.width = 900;
-        this.height = 150;
+        this.height = 130;
 
         // Refs for the div container and the renderer
         this.container = React.createRef();

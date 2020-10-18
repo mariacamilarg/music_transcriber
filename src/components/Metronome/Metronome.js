@@ -10,7 +10,6 @@ import playSound from "../../libs/simpleTones";
 
 class Metronome extends React.Component {
 
-
   static propTypes = {
     bpm: PropTypes.number,
   };
@@ -33,42 +32,34 @@ class Metronome extends React.Component {
 
   handleChange = (event) => {
     if(event.target.value>0 && event.target.value<300){
-        var newBPM=parseInt(event.target.value);
-        this.props.changeInput(newBPM);
+      var newBPM = parseInt(event.target.value);
+      this.props.changeInput(newBPM);
     }
   }
 
   startBit = () =>{
-    this.setState({
-      play: !this.state.play
-    });
+    this.state.play = !this.state.play;
     if(this.state.play){
       this.makeBit();
     }
   }
 
   makeBit = () =>{
-    if(this.state.play){
-        var lapse=(1000*60)/this.props.bpm;
-        playSound("square", 5, 0.2, 5, 0.1);
-        setTimeout(() => {  this.makeBit(); }, lapse);
+    if (this.state.play) {
+      var lapse=(1000*60)/this.props.bpm;
+      playSound("square", 5, 0.2, 5, 0.1);
+      setTimeout(() => {  this.makeBit(); }, lapse);
     }
   }
 
   render() {
-    //const className = this.props.blackKey ? "component-key black" : "component-key";
     return (
-      <div className="Component-Metronome">
-        <div>
-            <button id="picture" onClick={this.startBit}></button>
-        </div>
-        <div>
-            <button id="plus" onClick={this.handleClickPlus}></button>
-            <br/>
-            <input id="metrInput" type="int" onChange={this.handleChange} value={this.props.bpm}/>
-            <br/>
-            <button id="minus" onClick={this.handleClickMinus}></button>
-        </div>
+      <div className="metronome">
+        <button id="picture" onClick={this.startBit}></button>
+
+        <button id="plus" onClick={this.handleClickPlus}></button>
+        <input id="metrInput" type="int" onChange={this.handleChange} value={this.props.bpm}/>
+        <button id="minus" onClick={this.handleClickMinus}></button>
       </div>
     );
   }

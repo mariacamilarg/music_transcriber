@@ -1,7 +1,6 @@
-.Component-Metronome {
-    margin-top: 1cm;
+.metronome {
     display: inline-flex;
-  }
+}
 
 #metrInput{
     width: 2cm;
@@ -12,13 +11,13 @@
 
 #picture{
     background-image: url("https://png.pngtree.com/png-vector/20190928/ourmid/pngtree-classic-metronome-icon-cartoon-style-png-image_1753285.jpg");
-    background-size: 70px;
-    height: 70px;
-    width: 70px;
+    background-size: 35px;
+    height: 40px;
+    width: 40px;
     border-color: black;
     border-radius: 10%;
     margin-right: 10px;
-    margin-top: 20px;
+    /* margin-top: 20px; */
 }
 
 #plus{

@@ -4,12 +4,19 @@
 
 .components-top {
   display: inline-block;
+  height: 40vh;
 }
 
-/* .components-middle{
-  display: inline-block;
-} */
+.components-middle {
+  display: flex;
+  height: 10vh;
+  margin-top: 50px;
+  justify-content: center;
+  align-items: center; 
+}
 
 .components-bottom{
   display: inline-block;
+  height: 30vh;
+  /* margin-top: 1cm; */
 }
