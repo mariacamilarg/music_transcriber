@@ -72,12 +72,12 @@ class PianoKey extends React.Component {
     return (
       <div className="component-key">
         <button className="white" onClick={this.handleClick} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp}>
-          {this.props.note}
+          {this.props.note + this.props.octave}
         </button>
         { 
           this.props.hasSharpKey && 
           <button className="black" onClick={this.handleClickSharp} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUpSharp}>
-            {this.props.note + "#"}
+            {this.props.note + "#" + this.props.octave}
           </button> 
         }
       </div>

@@ -1,6 +1,6 @@
 .component-key {
   display: inline-flex;
-  width: 13%;
+  width: 10%;
   height: 100%;
   border: 0; 
   flex: 1 1 auto;
@@ -8,17 +8,20 @@
 }
 
 .component-key button {
-  display: flex;
+  display: inline-flex;
+  align-items: flex-end; 
   border: 2px solid #000000; 
   flex: 1 1 auto;
   border-bottom-left-radius: .5rem;
   border-bottom-right-radius: .5rem;
+  text-align: center;
 }
 
 .component-key button.white {
   background-color: #ffffff;
   color: black;
   z-index: 2;
+  text-align: center;
 }
 
 .component-key button.black {

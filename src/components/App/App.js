@@ -9,6 +9,8 @@ import './App.css';
 
 class App extends React.Component {
 
+  // CONSTANTS
+
   keyToNotes = {
     "q": 'C',
     "s": 'D',
@@ -55,6 +57,8 @@ class App extends React.Component {
     'B':'A#'
   }
 
+  // CONSTRUCTOR
+
   constructor(props) {
     super(props);
     this.state = {
@@ -71,7 +75,11 @@ class App extends React.Component {
     this.bpmPlus = this.bpmPlus.bind(this);
     this.bpmMinus = this.bpmMinus.bind(this);
     this.setBPM = this.setBPM.bind(this);
+    this.octavePlus = this.octavePlus.bind(this);
+    this.octaveMinus = this.octaveMinus.bind(this);
   };
+
+  // FUNCTIONS
 
   handlemouseUp(data){
     var long= data.time;
@@ -264,8 +272,6 @@ class App extends React.Component {
     }
   }
 
-  
-
   onKeyUp = (e) => {
     const t=Date.now() - this.start;
     this.start=0;
@@ -304,19 +310,37 @@ class App extends React.Component {
     });
   }
 
+  octavePlus() {
+    if (this.state.octave != "8") {
+      this.setState({
+        octave: parseInt(this.state.octave) + 1 + ""
+      });
+    }
+  }
+
+  octaveMinus() {
+    if (this.state.octave != "0") {
+      this.setState({
+        octave: parseInt(this.state.octave) - 1 + ""
+      });
+    }
+  }
+
+  // RENDER
+
   render(){
     return (
       <div className="App" tabIndex={0} onKeyDown={(e) => this.onKeyDown(e)} onKeyUp={(e)=>this.onKeyUp(e)}>
         <h1>Music transcriber</h1>
         <br />
         <div className="components-upper">
-          <Piano octave={this.state.octave} clickHandler={this.handleClick} mouseUpHandler={this.handlemouseUp} />
+          <Piano octave={this.state.octave} clickHandler={this.handleClick} mouseUpHandler={this.handlemouseUp} octavePlus={this.octavePlus} octaveMinus={this.octaveMinus} />
           <Video url="https://www.youtube.com/watch?v=Vgt1d3eAm7A" />
         </div>
         <br />
         <div className="DownPart">
-        <Staff clef='treble' timeSignature='4/4' notes={this.state.notes} selected={this.state.selected} tempo={this.state.tempo}/>
-        <Metronome bpm={this.state.tempo} clickMinus={this.bpmMinus} clickPlus={this.bpmPlus} changeInput={this.setBPM}/>
+          <Staff clef='treble' timeSignature='4/4' notes={this.state.notes} selected={this.state.selected} tempo={this.state.tempo}/>
+          <Metronome bpm={this.state.tempo} clickMinus={this.bpmMinus} clickPlus={this.bpmPlus} changeInput={this.setBPM}/>
         </div>
       </div>
     );
