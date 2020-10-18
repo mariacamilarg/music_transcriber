@@ -286,14 +286,12 @@ class App extends React.Component {
   }
 
   bpmPlus(){
-    console.log("++");
     this.setState({
       tempo: this.state.tempo+1
     });
   }
 
   bpmMinus(){
-    console.log("--");
     this.setState({
       tempo: this.state.tempo-1
     });
@@ -312,7 +310,7 @@ class App extends React.Component {
         <Piano clickHandler={this.handleClick} mouseUpHandler={ this.handlemouseUp } octave={this.state.octave}/>
         <br />
         <div className="DownPart">
-        <Staff clef='treble' timeSignature='4/4' notes={this.state.notes} selected={this.state.selected}/>
+        <Staff clef='treble' timeSignature='4/4' notes={this.state.notes} selected={this.state.selected} tempo={this.state.tempo}/>
         <Metronome bpm={this.state.tempo} clickMinus={this.bpmMinus} clickPlus={this.bpmPlus} changeInput={this.setBPM}/>
         </div>
       </div>

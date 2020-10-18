@@ -20,6 +20,7 @@ class Metronome extends React.Component {
       this.state={
         play: false
       };
+      this.partBPM="";
   }
 
   handleClickPlus = ()=> {
@@ -47,7 +48,6 @@ class Metronome extends React.Component {
   makeBit = () =>{
     if(this.state.play){
         var lapse=(1000*60)/this.props.bpm;
-        console.log(lapse);
         playSound("square", 5, 0.2, 5, 0.1);
         setTimeout(() => {  this.makeBit(); }, lapse);
     }

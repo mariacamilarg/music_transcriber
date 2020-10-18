@@ -59,7 +59,6 @@ class PianoKey extends React.Component {
 
   handleClick = () => {
     var abcNoteWithOctave = this.props.note + this.props.octave;
-    console.log(abcNoteWithOctave);
     playTone(abcNoteWithOctave);
   };
 
