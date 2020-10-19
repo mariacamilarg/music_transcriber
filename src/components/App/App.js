@@ -63,11 +63,13 @@ class App extends React.Component {
     super(props);
     this.state = {
       notes: [],
-      octave:"4",  
-      selected:0,
-      tempo:60,
+      octave: "4",  
+      selected: 0,
+      tempo: 60,
       volume: 0.7,
-      timeElapsed:0,
+      speed: 1.0,
+      duration: 0,
+      timeElapsed: 0,
       seeking: false
     };
     this.start=0;
@@ -83,9 +85,11 @@ class App extends React.Component {
     this.play = this.play.bind(this);
     this.pause = this.pause.bind(this);
     this.handleVideoProgress = this.handleVideoProgress.bind(this);
+    this.handleDuration = this.handleDuration.bind(this);
     this.handleVolumeChange = this.handleVolumeChange.bind(this);
+    this.handleSpeedChange = this.handleSpeedChange.bind(this);
     this.handleSeekMouseUp = this.handleSeekMouseUp.bind(this);
-    this.handleSeekMouseDown = this.handleSeekMouseDown(this);
+    this.handleSeekMouseDown = this.handleSeekMouseDown.bind(this);
     this.handleSeekChange = this.handleSeekChange.bind(this);
   };
 
@@ -347,17 +351,28 @@ class App extends React.Component {
 
   handleVideoProgress(progress) {
     if (!this.state.seeking) {
-      console.log('handle video progress ', progress.played)
       this.setState({
         timeElapsed: progress.played
       });
     }
-    this.forceUpdate();
+  }
+
+  handleDuration(duration) {
+    console.log("duration " + duration);
+    this.setState({
+      duration: duration
+    });
   }
 
   handleVolumeChange(event) {
     this.setState({
       volume: parseFloat(event.target.value)
+    });
+  }
+
+  handleSpeedChange(event) {
+    this.setState({
+      speed: parseFloat(event.target.value)
     });
   }
 
@@ -372,7 +387,6 @@ class App extends React.Component {
       seeking: false,
       timeElapsed: parseFloat(event.target.value)
     });
-    console.log("seek up " + event.target.value);
     this.video.handleSeek(event.target.value);
   }
 
@@ -400,8 +414,13 @@ class App extends React.Component {
           />
           <Video ref={child => {this.video = child}} 
             url="https://www.youtube.com/watch?v=Vgt1d3eAm7A"
-            volume={this.state.volume}  
+            volume={this.state.volume} 
+            speed={this.state.speed} 
+            duration={this.state.duration} 
+            onPlay={this.play}
+            onPause={this.pause}
             handleProgress={this.handleVideoProgress}
+            handleDuration={this.handleDuration}
           />
         </div>
         <div className="components-middle">
@@ -413,7 +432,10 @@ class App extends React.Component {
             play={this.play}
             pause={this.pause} 
             volume={this.state.volume}
+            duration={this.state.duration} 
+            speed={this.state.speed} 
             timeElapsed={this.state.timeElapsed} 
+            handleSpeedChange={this.handleSpeedChange}
             handleVolumeChange={this.handleVolumeChange}
             handleSeekMouseUp={this.handleSeekMouseUp} 
             handleSeekMouseDown={this.handleSeekMouseDown}

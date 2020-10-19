@@ -13,7 +13,10 @@ class Video extends React.Component {
   static propTypes = {
     url: PropTypes.string,
     volume: PropTypes.number,
+    onPlay: PropTypes.func,
+    onPause: PropTypes.func,
     handleProgress: PropTypes.func,
+    handleDuration: PropTypes.func,
   };
 
   constructor(props) {
@@ -61,6 +64,11 @@ class Video extends React.Component {
     this.props.handleProgress(progress);
   }
 
+  handleDuration = (duration) => {
+    // duration in seconds
+    this.props.handleDuration(duration);
+  }
+
   render() {
     return (
       <div className='component-video'>
@@ -70,16 +78,33 @@ class Video extends React.Component {
           </label>
           <input className='search-button' type="submit" value="OK" />
         </form>
-        <ReactPlayer 
-          ref={child => {this.player = child}} 
+        <ReactPlayer ref={child => {this.player = child}} 
+          className="video-player"
           url={this.state.videoUrl} 
           controls={false} 
           loop={true}
+          pip={false}
           volume={this.props.volume}
+          playbackRate={this.props.speed}
           playing={this.state.playing} 
           onProgress={this.handleProgress} 
+          onDuration={this.handleDuration}
+          onPlay={this.props.onPlay}
+          onPause={this.props.onPause}
           width='100%' 
-          height='85%'/>
+          height='85%'
+          config={{
+            youtube: {
+              playerVars: { 
+                rel: 0,
+                disablekb: 1,
+                controls: 0,
+                modestbranding: 1,
+                fs: 0,
+                iv_load_policy: 3,
+              }
+            },
+          }}/>
       </div>
     );
   }

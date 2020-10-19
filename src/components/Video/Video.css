@@ -14,7 +14,12 @@
 .search-bar {
   width: 80%;
 }
+
 .search-button {
   margin-left: 5%;
   width: 10%;
+}
+
+.video-player {
+  /* pointer-events: none */
 }
