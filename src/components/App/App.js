@@ -69,6 +69,7 @@ class App extends React.Component {
       volume: 0.7,
       speed: 1.0,
       duration: 0,
+      playing: false,
       timeElapsed: 0,
       seeking: false
     };
@@ -158,9 +159,11 @@ class App extends React.Component {
     var newNote;
     var playToneNote;
     var oc;
+
     if(this.start===0 && (this.keyToNotes[e.key]!==undefined || this.keyToNotesSharp[e.key]!==undefined)){
       this.start=Date.now();
     }
+
     // ArrowUp : tone up
     if(String(e.key)==="ArrowUp" && this.state.notes.length>0){
       note=this.state.notes[this.state.selected];//.pop();
@@ -230,6 +233,9 @@ class App extends React.Component {
         notes: this.state.notes
       });
     }
+
+    //ArrowLeft : note duration down
+    //ArrowRight : note duration up
     else if((String(e.key)==="ArrowLeft" || String(e.key)==="ArrowRight") && this.state.notes.length>0){
       if(e.shiftKey){
         if(String(e.key)==="ArrowLeft"){
@@ -282,6 +288,15 @@ class App extends React.Component {
         this.setState({
           notes: this.state.notes
         });
+      }
+    }
+
+    //Spacebar(" ") : play/pause video and notes
+    else if(String(e.key)===" " || String(e.key)==="Spacebar"){
+      if (this.state.playing) {
+        this.pause();
+      } else {
+        this.play();
       }
     }
   }
@@ -341,12 +356,22 @@ class App extends React.Component {
   }
 
   play() {
-    this.staff.playStaffNotes();
-    this.video.handlePlay();
+    if (!this.state.playing) {
+      this.setState({
+        playing: true
+      });
+      this.staff.playStaffNotes();
+      this.video.handlePlay();
+    }
   }
 
   pause() {
-    this.video.handlePause();
+    if (this.state.playing) {
+      this.setState({
+        playing: false
+      });
+      this.video.handlePause();
+    }
   }
 
   handleVideoProgress(progress) {
@@ -395,7 +420,6 @@ class App extends React.Component {
       timeElapsed: parseFloat(event.target.value)
     });
   }
-
 
   // RENDER
 
