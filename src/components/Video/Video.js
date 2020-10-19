@@ -89,8 +89,8 @@ class Video extends React.Component {
           playing={this.state.playing} 
           onProgress={this.handleProgress} 
           onDuration={this.handleDuration}
-          onPlay={this.props.onPlay}
-          onPause={this.props.onPause}
+          // onPlay={this.props.onPlay}
+          // onPause={this.props.onPause}
           width='100%' 
           height='85%'
           config={{

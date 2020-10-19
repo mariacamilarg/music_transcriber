@@ -1,9 +1,15 @@
 import React from 'react';
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import PauseIcon from '@material-ui/icons/Pause';
 import Metronome from '../Metronome/Metronome';
 import PropTypes from "prop-types";
 import "./Controls.css";
 
 /*
+* https://material-ui.com/components/material-icons/
+*
 * https://github.com/CookPete/react-player/blob/master/src/demo/App.js
 * https://cookpete.com/react-player/
 */
@@ -17,6 +23,7 @@ class Controls extends React.Component {
     changeBpm: PropTypes.func,
     play: PropTypes.func,
     pause: PropTypes.func,
+    playing: PropTypes.bool,
     speed: PropTypes.number,
     volume: PropTypes.number,
     timeElapsed: PropTypes.number,
@@ -25,11 +32,15 @@ class Controls extends React.Component {
   };
 
   constructor(props) {
-		super(props)
+    super(props)
+    this.state = {
+      playPause: "pause",
+    };
     this.handleSeekChange=this.handleSeekChange.bind(this);
     this.handleVolumeChange=this.handleVolumeChange.bind(this);
     this.handleSpeedChange=this.handleSpeedChange.bind(this);
-  }
+    this.handlePlayPause=this.handlePlayPause.bind(this);
+  };
 
   parseSeconds(timeElapsed) {
     var dummyDate = new Date(0);
@@ -48,7 +59,15 @@ class Controls extends React.Component {
   handleSeekChange(event) {
     this.props.handleSeekChange(event);
   }
-  
+
+  handlePlayPause = (event, newPlayPause) => {
+    if (newPlayPause === "pause" && this.props.playing) {
+      this.props.pause();
+    } else if (newPlayPause === "play" && !this.props.playing) {
+      this.props.play();
+    }
+  };
+
   render() {
     return (
       <div className="controls">
@@ -92,8 +111,19 @@ class Controls extends React.Component {
         </div>
 
         <div className="section">
-          <button onClick={this.props.play}>Play</button>
-          <button onClick={this.props.pause}>Pause</button>
+          <ToggleButtonGroup
+            value={this.props.playing ? "play" : "pause"}
+            exclusive
+            onChange={this.handlePlayPause}
+            aria-label="text alignment"
+          >
+            <ToggleButton value="play" aria-label="centered">
+              <PlayArrowIcon />
+            </ToggleButton>
+            <ToggleButton value="pause" aria-label="centered">
+              <PauseIcon />
+            </ToggleButton>
+          </ToggleButtonGroup>
         </div>
 
       </div>

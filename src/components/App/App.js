@@ -294,8 +294,10 @@ class App extends React.Component {
     //Spacebar(" ") : play/pause video and notes
     else if(String(e.key)===" " || String(e.key)==="Spacebar"){
       if (this.state.playing) {
+        console.log("pause key")
         this.pause();
       } else {
+        console.log("play key")
         this.play();
       }
     }
@@ -356,22 +358,22 @@ class App extends React.Component {
   }
 
   play() {
-    if (!this.state.playing) {
-      this.setState({
-        playing: true
-      });
-      this.staff.playStaffNotes();
-      this.video.handlePlay();
-    }
+    console.log("play")
+    this.staff.setPlayingNotes(true);
+    this.staff.playStaffNotes();
+    this.video.handlePlay();
+    this.setState({
+      playing: true
+    });
   }
 
   pause() {
-    if (this.state.playing) {
-      this.setState({
-        playing: false
-      });
-      this.video.handlePause();
-    }
+    console.log("pause")
+    this.staff.setPlayingNotes(false);
+    this.video.handlePause();
+    this.setState({
+      playing: false
+    });
   }
 
   handleVideoProgress(progress) {
@@ -383,7 +385,6 @@ class App extends React.Component {
   }
 
   handleDuration(duration) {
-    console.log("duration " + duration);
     this.setState({
       duration: duration
     });
@@ -455,6 +456,7 @@ class App extends React.Component {
             changeBpm={this.setBPM} 
             play={this.play}
             pause={this.pause} 
+            playing={this.state.playing}
             volume={this.state.volume}
             duration={this.state.duration} 
             speed={this.state.speed} 

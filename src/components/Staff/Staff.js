@@ -16,6 +16,8 @@ class Staff extends React.Component {
     constructor(props){
         super(props);
 
+        this.playingNotes = false;
+
         this.VF = VexFlow.Flow;
         this.width = 900;
         this.height = 130;
@@ -154,21 +156,27 @@ class Staff extends React.Component {
         console.log("Play Stave");
         var total=0.0;
         for(const n in this.props.notes){
-            var note=this.props.notes[n];
-            var keys=note.keys;
-            var duration=note.duration;
-            var dot=note.dot!==undefined ? note.dot : false;
-            var toneDuration=((60/this.props.tempo)*4)/duration;
-            if(String(dot)==="true"){
-                toneDuration+=toneDuration/2;
+            if (this.playingNotes) {
+                var note=this.props.notes[n];
+                var keys=note.keys;
+                var duration=note.duration;
+                var dot=note.dot!==undefined ? note.dot : false;
+                var toneDuration=((60/this.props.tempo)*4)/duration;
+                if(String(dot)==="true"){
+                    toneDuration+=toneDuration/2;
+                }
+                for(const k in keys){
+                    var decomp=String(keys[k]).split('/');
+                    var name=decomp[0]+decomp[1];
+                    this.playNote(name,toneDuration, total);
+                }
+                total=total+toneDuration;
             }
-            for(const k in keys){
-                var decomp=String(keys[k]).split('/');
-                var name=decomp[0]+decomp[1];
-                this.playNote(name,toneDuration, total);
-            }
-            total=total+toneDuration;
         }
+    }
+
+    setPlayingNotes(newPlayingNotes) {
+        this.playingNotes = newPlayingNotes;
     }
 
     playNote=(note,duration,delay)=>{
