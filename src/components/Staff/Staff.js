@@ -150,7 +150,7 @@ class Staff extends React.Component {
         this.paint();
     }
 
-    player=()=>{
+    playStaffNotes = () => {
         console.log("Play Stave");
         var total=0.0;
         for(const n in this.props.notes){

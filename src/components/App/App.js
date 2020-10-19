@@ -65,7 +65,9 @@ class App extends React.Component {
       notes: [],
       octave:"4",  
       selected:0,
-      tempo:60
+      tempo:60,
+      timeElapsed:0,
+      seeking: false
     };
     this.start=0;
     this.key="";
@@ -78,6 +80,10 @@ class App extends React.Component {
     this.octavePlus = this.octavePlus.bind(this);
     this.octaveMinus = this.octaveMinus.bind(this);
     this.play = this.play.bind(this);
+    this.pause = this.pause.bind(this);
+    this.handleVideoProgress = this.handleVideoProgress.bind(this);
+    this.handleSeekMouseUp = this.handleSeekMouseUp.bind(this);
+    this.handleSeekMouseDown = this.handleSeekMouseDown(this);
   };
 
   // FUNCTIONS
@@ -327,9 +333,46 @@ class App extends React.Component {
     }
   }
 
-  play(){
-    this.staff.player();
+  play() {
+    this.staff.playStaffNotes();
+    this.video.handlePlay();
   }
+
+  pause() {
+    this.video.handlePause();
+  }
+
+  handleVideoProgress(progress) {
+    if (!this.state.seeking) {
+      console.log('handle video progress ', progress.played)
+      this.setState({
+        timeElapsed: progress.played
+      });
+    }
+    this.forceUpdate();
+  }
+
+  handleSeekMouseDown = event => {
+    this.setState({
+      seeking: true
+    });
+  }
+
+  handleSeekMouseUp = event => {
+    this.setState({
+      seeking: false,
+      timeElapsed: parseFloat(event.target.value)
+    });
+    console.log("seek up " + event.target.value);
+    this.video.handleSeek(event.target.value);
+  }
+
+  handleSeekChange(event) {
+    this.setState({
+      timeElapsed: parseFloat(event.target.value)
+    });
+  }
+
 
   // RENDER
 
@@ -339,14 +382,40 @@ class App extends React.Component {
         <h1>Music transcriber</h1>
         <br />
         <div className="components-top">
-          <Piano octave={this.state.octave} clickHandler={this.handleClick} mouseUpHandler={this.handlemouseUp} octavePlus={this.octavePlus} octaveMinus={this.octaveMinus} />
-          <Video url="https://www.youtube.com/watch?v=Vgt1d3eAm7A" />
+          <Piano 
+            octave={this.state.octave} 
+            clickHandler={this.handleClick} 
+            mouseUpHandler={this.handlemouseUp} 
+            octavePlus={this.octavePlus} 
+            octaveMinus={this.octaveMinus} 
+          />
+          <Video ref={child => {this.video = child}} 
+            url="https://www.youtube.com/watch?v=Vgt1d3eAm7A"  
+            handleProgress={this.handleVideoProgress}
+          />
         </div>
         <div className="components-middle">
-          <Controls bpm={this.state.tempo} bpmMinus={this.bpmMinus} bpmPlus={this.bpmPlus} changeBpm={this.setBPM} play={this.play}/>
+          <Controls 
+            bpm={this.state.tempo} 
+            bpmMinus={this.bpmMinus} 
+            bpmPlus={this.bpmPlus} 
+            changeBpm={this.setBPM} 
+            play={this.play}
+            pause={this.pause} 
+            timeElapsed={this.state.timeElapsed} 
+            handleSeekMouseUp={this.handleSeekMouseUp} 
+            handleSeekMouseDown={this.handleSeekMouseDown}
+            handleSeekChange={this.handleSeekChange.bind(this)}
+          />
         </div>
         <div className="components-bottom">
-          <Staff ref={child => {this.staff = child}} clef='treble' timeSignature='4/4' notes={this.state.notes} selected={this.state.selected} tempo={this.state.tempo}/>
+          <Staff ref={child => {this.staff = child}} 
+            clef='treble' 
+            timeSignature='4/4' 
+            notes={this.state.notes} 
+            selected={this.state.selected} 
+            tempo={this.state.tempo}
+          />
         </div>
       </div>
     );

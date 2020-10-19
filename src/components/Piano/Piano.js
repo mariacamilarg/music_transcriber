@@ -29,11 +29,11 @@ class Piano extends React.Component {
     this.props.clickHandler(keyNote);
   };
 
-  octaveMinus = ()=> {
+  octaveMinus = () => {
     this.props.octaveMinus();
   };
 
-  octavePlus = ()=> {
+  octavePlus = () => {
     this.props.octavePlus();
   };
 

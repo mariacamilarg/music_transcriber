@@ -6,14 +6,13 @@ import './Video.css';
 /*
 * https://www.musicnotes.com/sheetmusic/mtd.asp?ppn=MN0200332
 * https://github.com/CookPete/react-player
-* https://github.com/CookPete/react-player/blob/master/src/demo/App.js
-* https://cookpete.com/react-player/
 */
 
 class Video extends React.Component {
 
   static propTypes = {
     url: PropTypes.string,
+    handleProgress: PropTypes.func,
   };
 
   constructor(props) {
@@ -21,6 +20,7 @@ class Video extends React.Component {
     this.state = {
       enteredUrl: this.props.url,
       videoUrl: this.props.url,
+      playing: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -40,6 +40,26 @@ class Video extends React.Component {
     });
   }
 
+  handlePlay = () => {
+    this.setState({ 
+      playing: true 
+    });
+  }
+
+  handlePause = () => {
+    this.setState({ 
+      playing: false 
+    });
+  }
+
+  handleSeek = (newTimePosition) => {
+    this.player.seekTo(newTimePosition);
+  }
+
+  handleProgress = (progress) => {
+    this.props.handleProgress(progress);
+  }
+
   render() {
     return (
       <div className='component-video'>
@@ -49,7 +69,15 @@ class Video extends React.Component {
           </label>
           <input className='search-button' type="submit" value="OK" />
         </form>
-        <ReactPlayer url={this.state.videoUrl} width='100%' height='85%'/>
+        <ReactPlayer 
+          ref={child => {this.player = child}} 
+          url={this.state.videoUrl} 
+          controls={false} 
+          loop={true}
+          playing={this.state.playing} 
+          onProgress={this.handleProgress} 
+          width='100%' 
+          height='85%'/>
       </div>
     );
   }
