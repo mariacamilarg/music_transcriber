@@ -3,8 +3,11 @@
 }
 
 .components-top {
-  display: block;
+  display: flex;
+  text-align: center;
   height: 40vh;
+  margin-left: 40px;
+  margin-right: 30px;
 }
 
 .components-middle {
