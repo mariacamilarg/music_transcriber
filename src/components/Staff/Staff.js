@@ -1,4 +1,6 @@
 import React from 'react'
+import Button from '@material-ui/core/Button';
+import MusicNoteIcon from '@material-ui/icons/MusicNote';
 import PropTypes from "prop-types";
 import VexFlow from 'vexflow'
 import './Staff.css';
@@ -17,8 +19,8 @@ class Staff extends React.Component {
         super(props);
 
         this.VF = VexFlow.Flow;
-        this.width = 800;
-        this.height = 150;
+        this.width = 900;
+        this.height = 130;
 
         // Refs for the div container and the renderer
         this.container = React.createRef();
@@ -155,7 +157,8 @@ class Staff extends React.Component {
         this.paint();
     }
 
-    player=()=>{
+    playStaffNotes = () => {
+        console.log("Play Stave");
         var total=0.0;
         for(const n in this.props.notes){
             var note=this.props.notes[n];
@@ -198,12 +201,12 @@ class Staff extends React.Component {
 
     render(){
         return (
-            <div>
+            <div className="staff-group">
+                <Button id="staff-play" variant="outlined" onClick={this.playStaffNotes}>
+                    <MusicNoteIcon />
+                </Button>
                 <div id='Stave' ref={this.container} />
-                <button onClick={this.player}>Play</button>
             </div>
-            
-
         );
     }
 }

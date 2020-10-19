@@ -1,0 +1,17 @@
+.controls {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
+
+.section {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+/* .section button {
+    margin-left: 5px;
+    margin-right: 5px;
+    border-radius: 10%;
+    border: 2px solid #000000;
+} */

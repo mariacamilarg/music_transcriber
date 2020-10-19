@@ -2,19 +2,24 @@
   text-align: center;
 }
 
-.components-upper {
+.components-top {
+  display: flex;
+  text-align: center;
+  height: 40vh;
+  margin-left: 40px;
+  margin-right: 30px;
+}
+
+.components-middle {
+  display: flex;
+  height: 10vh;
+  margin-top: 50px;
+  justify-content: center;
+  align-items: center; 
+}
+
+.components-bottom{
   display: inline-block;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-#Stave{
-  margin-top: 1cm;
-} 
-
-.DownPart{
-  display: inline-flex;
+  height: 30vh;
+  /* margin-top: 1cm; */
 }

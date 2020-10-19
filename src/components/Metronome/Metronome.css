@@ -1,24 +1,31 @@
-.Component-Metronome {
-    margin-top: 1cm;
+.metronome {
     display: inline-flex;
-  }
+}
+
+#metronome-icon {
+    margin-right: 10px;
+}
+
+#metronome-avatar {
+    margin-right: -4px;
+}
 
 #metrInput{
-    width: 2cm;
-    height: 30px;
+    width: 1cm;
+    /* height: 30px; */
     text-align: center;
     font-size: 16px;
 }
 
 #picture{
     background-image: url("https://png.pngtree.com/png-vector/20190928/ourmid/pngtree-classic-metronome-icon-cartoon-style-png-image_1753285.jpg");
-    background-size: 70px;
-    height: 70px;
-    width: 70px;
+    background-size: 35px;
+    height: 40px;
+    width: 40px;
     border-color: black;
     border-radius: 10%;
-    margin-right: 10px;
-    margin-top: 20px;
+    /* margin-right: 10px; */
+    /* margin-top: 20px; */
 }
 
 #plus{
@@ -55,6 +62,6 @@
     border-left-color: transparent;
     border-right-color: transparent;
     border-top-color: gray;
-  }
+}
 
 

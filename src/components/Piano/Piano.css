@@ -1,9 +1,15 @@
 .component-piano {
   background-color: #ffffff;
-  display: block;
-  height: 40vh;
-  width: 60vw;
-  margin-left: auto;
-  margin-right: auto;
-  float:left
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 65vw;
+  float:left;
+}
+
+#octave-dialer {
+  margin: 3px;
+  height: 30%;
+  /* border: 2px solid #000000;
+  border-radius: 20%; */
 }

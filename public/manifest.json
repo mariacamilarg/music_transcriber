@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Music Transcriber",
+  "name": "Music Transcriber",
   "icons": [
     {
       "src": "favicon.ico",

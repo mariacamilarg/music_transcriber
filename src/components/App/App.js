@@ -2,12 +2,14 @@ import React from 'react';
 import Piano from '../Piano/Piano';
 import Video from '../Video/Video';
 import Staff from '../Staff/Staff';
-import Metronome from '../Metronome/Metronome';
+import Controls from '../Controls/Controls';
 import playTone from "../../libs/simpleTones";
 //import StaffNote from '../Staff/StaffNote';
 import './App.css';
 
 class App extends React.Component {
+
+  // CONSTANTS
 
   keyToNotes = {
     "q": 'C',
@@ -55,13 +57,21 @@ class App extends React.Component {
     'B':'A#'
   }
 
+  // CONSTRUCTOR
+
   constructor(props) {
     super(props);
     this.state = {
       notes: [],
-      octave:"4",  
-      selected:0,
-      tempo:60
+      octave: "4",  
+      selected: 0,
+      tempo: 60,
+      volume: 0.7,
+      speed: 1.0,
+      duration: 0,
+      playing: false,
+      timeElapsed: 0,
+      seeking: false
     };
     this.start=0;
     this.key="";
@@ -71,7 +81,20 @@ class App extends React.Component {
     this.bpmPlus = this.bpmPlus.bind(this);
     this.bpmMinus = this.bpmMinus.bind(this);
     this.setBPM = this.setBPM.bind(this);
+    this.octavePlus = this.octavePlus.bind(this);
+    this.octaveMinus = this.octaveMinus.bind(this);
+    this.play = this.play.bind(this);
+    this.pause = this.pause.bind(this);
+    this.handleVideoProgress = this.handleVideoProgress.bind(this);
+    this.handleDuration = this.handleDuration.bind(this);
+    this.handleVolumeChange = this.handleVolumeChange.bind(this);
+    this.handleSpeedChange = this.handleSpeedChange.bind(this);
+    this.handleSeekMouseUp = this.handleSeekMouseUp.bind(this);
+    this.handleSeekMouseDown = this.handleSeekMouseDown.bind(this);
+    this.handleSeekChange = this.handleSeekChange.bind(this);
   };
+
+  // FUNCTIONS
 
   handlemouseUp(data){
     var long= data.time;
@@ -140,9 +163,11 @@ class App extends React.Component {
     var newNote;
     var playToneNote;
     var oc;
+
     if(this.start===0 && (this.keyToNotes[e.key]!==undefined || this.keyToNotesSharp[e.key]!==undefined || e.key==='!')){
       this.start=Date.now();
     }
+
     // ArrowUp : tone up
     if(String(e.key)==="ArrowUp" && this.state.notes.length>0){
       note=this.state.notes[this.state.selected];//.pop();
@@ -217,6 +242,9 @@ class App extends React.Component {
         notes: this.state.notes
       });
     }
+
+    //ArrowLeft : note duration down
+    //ArrowRight : note duration up
     else if((String(e.key)==="ArrowLeft" || String(e.key)==="ArrowRight") && this.state.notes.length>0){
       if(e.shiftKey){
         if(String(e.key)==="ArrowLeft"){
@@ -279,9 +307,19 @@ class App extends React.Component {
         });
       }
     }
-  }
 
-  
+    //Spacebar(" ") : play/pause video and notes
+    else if(String(e.key)===" " || String(e.key)==="Spacebar"){
+      if (this.state.playing) {
+        console.log("pause key")
+        this.pause();
+      } else {
+        console.log("play key")
+        this.play();
+      }
+      e.preventDefault();
+    }
+  }
 
   onKeyUp = (e) => {
     const t=Date.now() - this.start;
@@ -325,19 +363,139 @@ class App extends React.Component {
     });
   }
 
+  octavePlus() {
+    if (this.state.octave !== "8") {
+      this.setState({
+        octave: parseInt(this.state.octave) + 1 + ""
+      });
+    }
+  }
+
+  octaveMinus() {
+    if (this.state.octave !== "0") {
+      this.setState({
+        octave: parseInt(this.state.octave) - 1 + ""
+      });
+    }
+  }
+
+  play() {
+    console.log("play")
+    //this.staff.playStaffNotes();
+    this.setState({
+      playing: true
+    });
+  }
+
+  pause() {
+    console.log("pause")
+    this.setState({
+      playing: false
+    });
+  }
+
+  handleVideoProgress(progress) {
+    if (!this.state.seeking) {
+      this.setState({
+        timeElapsed: progress.played
+      });
+    }
+  }
+
+  handleDuration(duration) {
+    this.setState({
+      duration: duration
+    });
+  }
+
+  handleVolumeChange(event) {
+    this.setState({
+      volume: parseFloat(event.target.value)
+    });
+  }
+
+  handleSpeedChange(event) {
+    this.setState({
+      speed: parseFloat(event.target.value)
+    });
+  }
+
+  handleSeekMouseDown = event => {
+    this.setState({
+      seeking: true
+    });
+  }
+
+  handleSeekMouseUp = event => {
+    this.setState({
+      seeking: false,
+      timeElapsed: parseFloat(event.target.value)
+    });
+    this.video.handleSeek(event.target.value);
+  }
+
+  handleSeekChange(event) {
+    this.setState({
+      timeElapsed: parseFloat(event.target.value)
+    });
+  }
+
+  // RENDER
+
   render(){
     return (
       <div className="App" tabIndex={0} onKeyDown={(e) => this.onKeyDown(e)} onKeyUp={(e)=>this.onKeyUp(e)}>
-        <h1>Music transcriber</h1>
+        <h1>Music Transcriber</h1>
         <br />
-        <div className="components-upper">
-          <Piano octave={this.state.octave} clickHandler={this.handleClick} mouseUpHandler={this.handlemouseUp} />
-          <Video url="https://www.youtube.com/watch?v=Vgt1d3eAm7A" />
+        <br />
+        <div className="components-top">
+          <Piano 
+            octave={this.state.octave} 
+            clickHandler={this.handleClick} 
+            mouseUpHandler={this.handlemouseUp} 
+            octavePlus={this.octavePlus} 
+            octaveMinus={this.octaveMinus} 
+          />
+          <Video ref={child => {this.video = child}} 
+            url="https://www.youtube.com/watch?v=Vgt1d3eAm7A"
+            playing={this.state.playing}
+            volume={this.state.volume} 
+            speed={this.state.speed} 
+            duration={this.state.duration} 
+            onPlay={this.play}
+            onPause={this.pause}
+            handleProgress={this.handleVideoProgress}
+            handleDuration={this.handleDuration}
+          />
         </div>
-        <br />
-        <div className="DownPart">
-        <Staff clef='treble' timeSignature='4/4' notes={this.state.notes} selected={this.state.selected} tempo={this.state.tempo}/>
-        <Metronome bpm={this.state.tempo} clickMinus={this.bpmMinus} clickPlus={this.bpmPlus} changeInput={this.setBPM}/>
+        <div className="components-middle">
+          <Controls 
+            bpm={this.state.tempo} 
+            bpmMinus={this.bpmMinus} 
+            bpmPlus={this.bpmPlus} 
+            changeBpm={this.setBPM} 
+            play={this.play}
+            pause={this.pause} 
+            playing={this.state.playing}
+            volume={this.state.volume}
+            duration={this.state.duration} 
+            speed={this.state.speed} 
+            timeElapsed={this.state.timeElapsed} 
+            handleSpeedChange={this.handleSpeedChange}
+            handleVolumeChange={this.handleVolumeChange}
+            handleSeekMouseUp={this.handleSeekMouseUp} 
+            handleSeekMouseDown={this.handleSeekMouseDown}
+            handleSeekChange={this.handleSeekChange}
+          />
+        </div>
+        <div className="components-bottom">
+          <Staff ref={child => {this.staff = child}} 
+            clef='treble' 
+            timeSignature='4/4' 
+            notes={this.state.notes} 
+            selected={this.state.selected} 
+            tempo={this.state.tempo}
+          />
         </div>
       </div>
     );

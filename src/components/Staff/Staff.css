@@ -1,5 +1,16 @@
+.staff-group{
+    display: flex;
+    align-items: center; 
+}
+
+#staff-play {
+    height: 50%;
+    margin-right: 20px;
+    margin-bottom: 15px;
+}
+
 #Stave{
-    height: 4cm;
-    width: 24cm;
+    height: 100%;
+    width: 100%;
 } 
 
