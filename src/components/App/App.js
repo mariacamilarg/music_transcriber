@@ -300,6 +300,7 @@ class App extends React.Component {
         console.log("play key")
         this.play();
       }
+      e.preventDefault();
     }
   }
 
@@ -359,9 +360,8 @@ class App extends React.Component {
 
   play() {
     console.log("play")
-    this.staff.setPlayingNotes(true);
-    this.staff.playStaffNotes();
-    this.video.handlePlay();
+    //this.staff.setPlayingNotes(true);
+    //this.staff.playStaffNotes();
     this.setState({
       playing: true
     });
@@ -369,8 +369,7 @@ class App extends React.Component {
 
   pause() {
     console.log("pause")
-    this.staff.setPlayingNotes(false);
-    this.video.handlePause();
+    //this.staff.setPlayingNotes(false);
     this.setState({
       playing: false
     });
@@ -439,6 +438,7 @@ class App extends React.Component {
           />
           <Video ref={child => {this.video = child}} 
             url="https://www.youtube.com/watch?v=Vgt1d3eAm7A"
+            playing={this.state.playing}
             volume={this.state.volume} 
             speed={this.state.speed} 
             duration={this.state.duration} 

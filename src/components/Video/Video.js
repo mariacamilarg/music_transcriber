@@ -13,6 +13,7 @@ class Video extends React.Component {
   static propTypes = {
     url: PropTypes.string,
     volume: PropTypes.number,
+    playing: PropTypes.bool,
     onPlay: PropTypes.func,
     onPause: PropTypes.func,
     handleProgress: PropTypes.func,
@@ -24,7 +25,6 @@ class Video extends React.Component {
     this.state = {
       enteredUrl: this.props.url,
       videoUrl: this.props.url,
-      playing: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -41,18 +41,6 @@ class Video extends React.Component {
     event.preventDefault();
     this.setState({
       videoUrl: this.state.enteredUrl
-    });
-  }
-
-  handlePlay = () => {
-    this.setState({ 
-      playing: true 
-    });
-  }
-
-  handlePause = () => {
-    this.setState({ 
-      playing: false 
     });
   }
 
@@ -86,7 +74,7 @@ class Video extends React.Component {
           pip={false}
           volume={this.props.volume}
           playbackRate={this.props.speed}
-          playing={this.state.playing} 
+          playing={this.props.playing} 
           onProgress={this.handleProgress} 
           onDuration={this.handleDuration}
           // onPlay={this.props.onPlay}
