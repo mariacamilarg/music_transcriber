@@ -360,7 +360,6 @@ class App extends React.Component {
 
   play() {
     console.log("play")
-    //this.staff.setPlayingNotes(true);
     //this.staff.playStaffNotes();
     this.setState({
       playing: true
@@ -369,7 +368,6 @@ class App extends React.Component {
 
   pause() {
     console.log("pause")
-    //this.staff.setPlayingNotes(false);
     this.setState({
       playing: false
     });
@@ -426,7 +424,7 @@ class App extends React.Component {
   render(){
     return (
       <div className="App" tabIndex={0} onKeyDown={(e) => this.onKeyDown(e)} onKeyUp={(e)=>this.onKeyUp(e)}>
-        <h1>Music transcriber</h1>
+        <h1>Music Transcriber</h1>
         <br />
         <div className="components-top">
           <Piano 

@@ -1,4 +1,9 @@
 import React from 'react';
+import Button from '@material-ui/core/Button';
+import Avatar from '@material-ui/core/Avatar';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
 import PropTypes from "prop-types";
 import "./Metronome.css"
 import playSound from "../../libs/simpleTones";
@@ -55,11 +60,21 @@ class Metronome extends React.Component {
   render() {
     return (
       <div className="metronome">
-        <button id="picture" onClick={this.startBit}></button>
+        <Button id="metronome-icon" variant="outlined" onClick={this.startBit} startIcon={<Avatar id="metronome-avatar" src={'https://png.pngtree.com/png-vector/20190928/ourmid/pngtree-classic-metronome-icon-cartoon-style-png-image_1753285.jpg'} />} />
+        {/* <button id="picture" onClick={this.startBit}></button> */}
 
-        <button id="plus" onClick={this.handleClickPlus}></button>
-        <input id="metrInput" type="int" onChange={this.handleChange} value={this.props.bpm}/>
-        <button id="minus" onClick={this.handleClickMinus}></button>
+        <Button variant="outlined" onClick={this.handleClickMinus}>
+          <RemoveIcon />
+        </Button>
+        {/* <button id="minus" onClick={this.handleClickMinus}></button> */}
+        
+        <OutlinedInput id="metrInput" type="int" onChange={this.handleChange} value={this.props.bpm} />
+        {/* <input id="metrInput" type="int" onChange={this.handleChange} value={this.props.bpm}/> */}
+
+        <Button variant="outlined" onClick={this.handleClickPlus}>
+          <AddIcon />
+        </Button>
+        {/* <button id="plus" onClick={this.handleClickPlus}></button> */}
       </div>
     );
   }

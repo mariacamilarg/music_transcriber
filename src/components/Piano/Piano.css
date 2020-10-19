@@ -2,14 +2,14 @@
   background-color: #ffffff;
   display: block;
   height: 100%;
-  width: 60vw;
+  width: 70vw;
   margin-left: auto;
   margin-right: auto;
   float:left
 }
 
-.octave-dialer {
+#octave-dialer {
   margin: 3px;
-  border: 2px solid #000000;
-  border-radius: 20%;
+  /* border: 2px solid #000000;
+  border-radius: 20%; */
 }

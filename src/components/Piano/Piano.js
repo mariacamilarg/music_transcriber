@@ -1,4 +1,7 @@
 import React from 'react';
+import Button from '@material-ui/core/Button';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import PropTypes from "prop-types";
 import './Piano.css';
 
@@ -40,9 +43,13 @@ class Piano extends React.Component {
   render() {
     return (
       <div className="component-piano">
-        <button className="octave-dialer" onClick={this.octaveMinus}>
+        <Button id="octave-dialer" variant="outlined" onClick={this.octaveMinus}>
+          <ChevronLeftIcon />
+        </Button>
+        {/* <button className="octave-dialer" onClick={this.octaveMinus}>
           &lt;
-        </button>
+        </button> */}
+
         <PianoKey note="C" octave={this.props.octave} keyboardLetter="A" mouseUpHandler={this.handlemouseUp} clickHandler={this.handleClick} hasSharpKey />
         <PianoKey note="D" octave={this.props.octave} keyboardLetter="S" mouseUpHandler={this.handlemouseUp} clickHandler={this.handleClick} hasSharpKey/>
         <PianoKey note="E" octave={this.props.octave} keyboardLetter="D" mouseUpHandler={this.handlemouseUp} clickHandler={this.handleClick} />
@@ -50,9 +57,13 @@ class Piano extends React.Component {
         <PianoKey note="G" octave={this.props.octave} keyboardLetter="G" mouseUpHandler={this.handlemouseUp} clickHandler={this.handleClick} hasSharpKey/>
         <PianoKey note="A" octave={this.props.octave} keyboardLetter="H" mouseUpHandler={this.handlemouseUp} clickHandler={this.handleClick} hasSharpKey/>
         <PianoKey note="B" octave={this.props.octave} keyboardLetter="J" mouseUpHandler={this.handlemouseUp} clickHandler={this.handleClick} />
-        <button className="octave-dialer" onClick={this.octavePlus}>
+
+        <Button id="octave-dialer" variant="outlined" onClick={this.octavePlus}>
+          <ChevronRightIcon />
+        </Button>
+        {/* <button className="octave-dialer" onClick={this.octavePlus}>
           &gt;
-        </button>
+        </button> */}
       </div>
     );
   }

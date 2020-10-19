@@ -1,4 +1,6 @@
 import React from 'react'
+import Button from '@material-ui/core/Button';
+import MusicNoteIcon from '@material-ui/icons/MusicNote';
 import PropTypes from "prop-types";
 import VexFlow from 'vexflow'
 import './Staff.css';
@@ -15,8 +17,6 @@ class Staff extends React.Component {
 
     constructor(props){
         super(props);
-
-        this.playingNotes = false;
 
         this.VF = VexFlow.Flow;
         this.width = 900;
@@ -156,27 +156,21 @@ class Staff extends React.Component {
         console.log("Play Stave");
         var total=0.0;
         for(const n in this.props.notes){
-            if (this.playingNotes) {
-                var note=this.props.notes[n];
-                var keys=note.keys;
-                var duration=note.duration;
-                var dot=note.dot!==undefined ? note.dot : false;
-                var toneDuration=((60/this.props.tempo)*4)/duration;
-                if(String(dot)==="true"){
-                    toneDuration+=toneDuration/2;
-                }
-                for(const k in keys){
-                    var decomp=String(keys[k]).split('/');
-                    var name=decomp[0]+decomp[1];
-                    this.playNote(name,toneDuration, total);
-                }
-                total=total+toneDuration;
+            var note=this.props.notes[n];
+            var keys=note.keys;
+            var duration=note.duration;
+            var dot=note.dot!==undefined ? note.dot : false;
+            var toneDuration=((60/this.props.tempo)*4)/duration;
+            if(String(dot)==="true"){
+                toneDuration+=toneDuration/2;
             }
+            for(const k in keys){
+                var decomp=String(keys[k]).split('/');
+                var name=decomp[0]+decomp[1];
+                this.playNote(name,toneDuration, total);
+            }
+            total=total+toneDuration;
         }
-    }
-
-    setPlayingNotes(newPlayingNotes) {
-        this.playingNotes = newPlayingNotes;
     }
 
     playNote=(note,duration,delay)=>{
@@ -191,7 +185,12 @@ class Staff extends React.Component {
 
     render(){
         return (
-            <div id='Stave' ref={this.container} />
+            <div className="staff-group">
+                <Button id="staff-play" variant="outlined" onClick={this.playStaffNotes}>
+                    <MusicNoteIcon />
+                </Button>
+                <div id='Stave' ref={this.container} />
+            </div>
         );
     }
 }

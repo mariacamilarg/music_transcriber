@@ -1,4 +1,5 @@
 import React from 'react';
+import Slider from '@material-ui/core/Slider';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
@@ -90,6 +91,13 @@ class Controls extends React.Component {
           <label>Volume: </label>
           <span>{this.props.volume.toFixed(2)*100}% </span>
           <br/>
+          {/* <Slider 
+            min={0} 
+            max={1}
+            value={this.props.volume}
+            onChange={this.handleVolumeChange}
+            aria-labelledby="continuous-slider" 
+          /> */}
           <input 
             type='range' min={0} max={1} step='any' 
             value={this.props.volume} 
