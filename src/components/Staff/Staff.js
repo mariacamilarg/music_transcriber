@@ -23,6 +23,7 @@ class Staff extends React.Component {
         // Refs for the div container and the renderer
         this.container = React.createRef();
         this.rendererRef = React.createRef();
+        this.played=-1;
     }
 
     parseNotes (unparsedNotes) {
@@ -37,10 +38,10 @@ class Staff extends React.Component {
             const duration=unparsedNotes[n].duration
             var dot= unparsedNotes[n].dot!==undefined ? unparsedNotes[n].dot : null;
             if(dot!==null && dot[0]){
-                barSum+=1/duration+1/(duration*2);
+                barSum+=1/duration[0]+1/(duration[0]*2);
             }
             else{
-                barSum+=1/duration;
+                barSum+=1/duration[0];
             }
             const note=new StaveNote({
                 clef:this.props.clef,
@@ -63,10 +64,14 @@ class Staff extends React.Component {
             }
             if(barSum>1){
                 newUnparsednotes.push(new BarNote());
-                barSum=1/duration;
+                barSum=1/duration[0];
             }
             if (parseInt(n)=== parseInt(this.props.selected)){
                 note.setStyle({ fillStyle: 'red', strokeStyle: 'red' });
+            }
+            if (parseInt(n)=== parseInt(this.played)){
+                console.log("this.played = "+this.played);
+                note.setStyle({ fillStyle: 'blue', strokeStyle: 'blue' });
             }
             newUnparsednotes.push(note);
             
@@ -120,7 +125,7 @@ class Staff extends React.Component {
         
     }
 
-    paint () {
+    paint = ()=> {
         this.initializeRenderer();
         this.initializeContext();
 
@@ -135,7 +140,7 @@ class Staff extends React.Component {
         this.context.closeGroup();
     }
 
-    clear () {
+    clear = ()=> {
         // Delete the existing group to paint again
         this.context = this.renderer.getContext();
         this.context.svg.removeChild(this.group);
@@ -151,12 +156,15 @@ class Staff extends React.Component {
     }
 
     player=()=>{
-        console.log("Play Stave");
         var total=0.0;
         for(const n in this.props.notes){
             var note=this.props.notes[n];
             var keys=note.keys;
-            var duration=note.duration;
+            var duration=note.duration[0];
+            var rest=false;
+            if(String(note.duration).includes('r')){
+                rest=true;
+            }
             var dot=note.dot!==undefined ? note.dot : false;
             var toneDuration=((60/this.props.tempo)*4)/duration;
             if(String(dot)==="true"){
@@ -165,20 +173,27 @@ class Staff extends React.Component {
             for(const k in keys){
                 var decomp=String(keys[k]).split('/');
                 var name=decomp[0]+decomp[1];
-                this.playNote(name,toneDuration, total);
+                this.playNote(n,name,toneDuration, rest, total);
             }
             total=total+toneDuration;
         }
+        var that=this;
+        setTimeout(function(){ that.played=-1; that.componentDidUpdate();}, (total+1)*1000);
     }
 
-    playNote=(note,duration,delay)=>{
-        //setTimeout(function(){ console.log(note+" for "+duration+"s after "+delay*1000+" milliseconds"); }, delay*1000);
-        console.log(note+" for "+duration+"s after "+delay+" seconds");
+    playNote=(nb,note,duration, rest,delay)=>{
         var time=1.5;
         if(duration>1.5){
             time=duration;
         }
-        setTimeout(function(){ playTone(note,"sine",time); }, delay*1000);
+        var that=this;
+        if(rest===true){
+            setTimeout(function(){ that.played=nb; that.componentDidUpdate(); console.log("chut"); }, delay*1000);
+        }
+        else{
+            setTimeout(function(){ that.played=nb; that.componentDidUpdate(); playTone(note,"sine",time); }, delay*1000);
+        }
+        
     }
 
     render(){
