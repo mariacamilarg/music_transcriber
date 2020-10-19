@@ -17,13 +17,20 @@ class Controls extends React.Component {
     changeBpm: PropTypes.func,
     play: PropTypes.func,
     pause: PropTypes.func,
+    volume: PropTypes.number,
     timeElapsed: PropTypes.number,
     handleSeekMouseUp: PropTypes.func,
+    handleVolumeChange: PropTypes.func,
   };
 
   constructor(props) {
 		super(props)
     this.handleSeekChange=this.handleSeekChange.bind(this);
+    this.handleVolumeChange=this.handleVolumeChange.bind(this);
+  }
+
+  handleVolumeChange(event) {
+    this.props.handleVolumeChange(event);
   }
 
   handleSeekChange(event) {
@@ -43,6 +50,15 @@ class Controls extends React.Component {
         </div>
 
         <div className="section">
+          <label>Volume: </label>
+          <input 
+            type='range' min={0} max={1} step='any' 
+            value={this.props.volume} 
+            onChange={this.handleVolumeChange} 
+          />
+        </div>
+
+        <div className="section">
           <label>Seek: </label>
           <input
             type='range' min={0} max={0.999999} step='any'
@@ -54,7 +70,7 @@ class Controls extends React.Component {
         </div>
 
         <div className="section">
-          
+        
         </div>
 
       </div>

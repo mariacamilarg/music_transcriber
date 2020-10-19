@@ -12,6 +12,7 @@ class Video extends React.Component {
 
   static propTypes = {
     url: PropTypes.string,
+    volume: PropTypes.number,
     handleProgress: PropTypes.func,
   };
 
@@ -74,6 +75,7 @@ class Video extends React.Component {
           url={this.state.videoUrl} 
           controls={false} 
           loop={true}
+          volume={this.props.volume}
           playing={this.state.playing} 
           onProgress={this.handleProgress} 
           width='100%' 

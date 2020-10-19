@@ -66,6 +66,7 @@ class App extends React.Component {
       octave:"4",  
       selected:0,
       tempo:60,
+      volume: 0.7,
       timeElapsed:0,
       seeking: false
     };
@@ -82,8 +83,10 @@ class App extends React.Component {
     this.play = this.play.bind(this);
     this.pause = this.pause.bind(this);
     this.handleVideoProgress = this.handleVideoProgress.bind(this);
+    this.handleVolumeChange = this.handleVolumeChange.bind(this);
     this.handleSeekMouseUp = this.handleSeekMouseUp.bind(this);
     this.handleSeekMouseDown = this.handleSeekMouseDown(this);
+    this.handleSeekChange = this.handleSeekChange.bind(this);
   };
 
   // FUNCTIONS
@@ -352,6 +355,12 @@ class App extends React.Component {
     this.forceUpdate();
   }
 
+  handleVolumeChange(event) {
+    this.setState({
+      volume: parseFloat(event.target.value)
+    });
+  }
+
   handleSeekMouseDown = event => {
     this.setState({
       seeking: true
@@ -390,7 +399,8 @@ class App extends React.Component {
             octaveMinus={this.octaveMinus} 
           />
           <Video ref={child => {this.video = child}} 
-            url="https://www.youtube.com/watch?v=Vgt1d3eAm7A"  
+            url="https://www.youtube.com/watch?v=Vgt1d3eAm7A"
+            volume={this.state.volume}  
             handleProgress={this.handleVideoProgress}
           />
         </div>
@@ -402,10 +412,12 @@ class App extends React.Component {
             changeBpm={this.setBPM} 
             play={this.play}
             pause={this.pause} 
+            volume={this.state.volume}
             timeElapsed={this.state.timeElapsed} 
+            handleVolumeChange={this.handleVolumeChange}
             handleSeekMouseUp={this.handleSeekMouseUp} 
             handleSeekMouseDown={this.handleSeekMouseDown}
-            handleSeekChange={this.handleSeekChange.bind(this)}
+            handleSeekChange={this.handleSeekChange}
           />
         </div>
         <div className="components-bottom">
