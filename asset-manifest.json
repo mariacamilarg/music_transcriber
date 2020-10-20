@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/music_transcriber/static/css/main.e8fc488f.chunk.css",
+    "main.js": "/music_transcriber/static/js/main.e74dcb23.chunk.js",
+    "main.js.map": "/music_transcriber/static/js/main.e74dcb23.chunk.js.map",
+    "runtime-main.js": "/music_transcriber/static/js/runtime-main.58378366.js",
+    "runtime-main.js.map": "/music_transcriber/static/js/runtime-main.58378366.js.map",
+    "static/js/2.8ebd653b.chunk.js": "/music_transcriber/static/js/2.8ebd653b.chunk.js",
+    "static/js/2.8ebd653b.chunk.js.map": "/music_transcriber/static/js/2.8ebd653b.chunk.js.map",
+    "index.html": "/music_transcriber/index.html",
+    "precache-manifest.a610cdb43440ec89ef2db768708d460e.js": "/music_transcriber/precache-manifest.a610cdb43440ec89ef2db768708d460e.js",
+    "service-worker.js": "/music_transcriber/service-worker.js",
+    "static/css/main.e8fc488f.chunk.css.map": "/music_transcriber/static/css/main.e8fc488f.chunk.css.map",
+    "static/js/2.8ebd653b.chunk.js.LICENSE.txt": "/music_transcriber/static/js/2.8ebd653b.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.58378366.js",
+    "static/js/2.8ebd653b.chunk.js",
+    "static/css/main.e8fc488f.chunk.css",
+    "static/js/main.e74dcb23.chunk.js"
+  ]
+}
